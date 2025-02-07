@@ -1,0 +1,18 @@
+table {
+    width:90%;
+    border-collapse: collapse;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 20px;
+}
+.mat-table {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    
+}
+button {
+    display: flex;
+    justify-content: flex-end; /* Aligns button to the right */
+    padding: 10px;
+}
