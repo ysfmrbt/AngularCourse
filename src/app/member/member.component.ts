@@ -1,27 +1,29 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {MemberService} from "../../services/member.service";
+import {Member} from "../../models/Member";
 @Component({
   selector: 'app-member',
   templateUrl: './member.component.html',
   styleUrls: ['./member.component.css'],
 })
-export class MemberComponent {
+export class MemberComponent implements OnInit {
+  dataSource: Member[] = [];
+  displayedColumns: string[] = [
+    'id',
+    'cin',
+    'name',
+    'type',
+    'createDate',
+    'action',
+  ];
+  // Injection de MemberService dans le composant
+  constructor(private memberService: MemberService) {
 
-  dataSource :any[]= [
-    {
-      id:'1245',
-      cin:'1254',
-      name: 'imene',
-      type:'teacher',
-      createDate:'12/12'
-    },
-    {
-      id:'5524',
-      cin:'5542',
-      name: 'aymen',
-      type:'student',
-      createDate:'13/12'
-    }
-  ]
-  displayedColumns: string[] = ['id', 'cin', 'name', 'type', 'createDate', 'action'];
+  }
 
+    ngOnInit() {
+    this.memberService.getAllMembers().subscribe((data) => {
+      this.dataSource = data;
+    });
+  }
 }
