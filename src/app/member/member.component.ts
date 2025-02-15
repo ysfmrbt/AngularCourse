@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {MemberService} from "../../services/member.service";
-import {Member} from "../../models/Member";
+import { Component, OnInit } from '@angular/core';
+import { MemberService } from '../../services/member.service';
+import { Member } from '../../models/Member';
 @Component({
   selector: 'app-member',
   templateUrl: './member.component.html',
@@ -17,13 +17,16 @@ export class MemberComponent implements OnInit {
     'action',
   ];
   // Injection de MemberService dans le composant
-  constructor(private memberService: MemberService) {
+  constructor(private memberService: MemberService) {}
 
-  }
-
-    ngOnInit() {
+  ngOnInit() {
     this.memberService.getAllMembers().subscribe((data) => {
       this.dataSource = data;
+    });
+  }
+  deleteMember(id: string) {
+    this.memberService.deleteMember(id).subscribe(() => {
+      this.dataSource = this.dataSource.filter((member) => member.id !== id);
     });
   }
 }

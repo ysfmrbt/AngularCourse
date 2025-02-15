@@ -1,0 +1,28 @@
+<section>
+  <div>
+    <h1>Formulaire d'ajout d'un membre</h1>
+  </div>
+  <div>
+    <form [formGroup]="form" (ngSubmit)="sub()">
+      <mat-form-field>
+        <mat-label>CIN</mat-label>
+        <input matInput placeholder="CIN" formControlName="cin">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Nom</mat-label>
+        <input matInput placeholder="Nom" formControlName="nom">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Type</mat-label>
+        <input matInput placeholder="Type" formControlName="type">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Date de création</mat-label>
+        <input matInput placeholder="Date de création" formControlName="createDate">
+      </mat-form-field>
+      <button type="submit" mat-button color="primary">Ajouter</button>
+
+    </form>
+  </div>
+
+</section>

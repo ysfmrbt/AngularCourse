@@ -1,0 +1,25 @@
+{
+  "members": [
+    {
+      "id": 1,
+      "name": "John Doe",
+      "cin": "12345678",
+      "type": "admin",
+      "createDate": "2020-01-01"
+    },
+    {
+      "id": 2,
+      "name": "Jane Doe",
+      "cin": "87654321",
+      "type": "user",
+      "createDate": "2020-01-01"
+    },
+    {
+      "id": 3,
+      "name": "John Smith",
+      "cin": "12348765",
+      "type": "user",
+      "createDate": "2020-01-01"
+    }
+  ]
+}
