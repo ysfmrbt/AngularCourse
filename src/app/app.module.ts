@@ -12,9 +12,10 @@ import { MemberFormComponent } from './member-form/member-form.component';
 import {MatInputModule} from "@angular/material/input";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 @NgModule({
-  declarations: [AppComponent, MemberComponent, MemberFormComponent],
+  declarations: [AppComponent, MemberComponent, MemberFormComponent, ConfirmDialogComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

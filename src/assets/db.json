@@ -16,17 +16,10 @@
     },
     {
       "cin": "12348765",
-      "nom": "abcd",
+      "nom": "abcd42",
       "type": "user",
       "createDate": "2020-01-01",
       "id": "3"
-    },
-    {
-      "cin": "4242",
-      "nom": "hjkhk",
-      "type": "hjkhjk",
-      "createDate": "hjkhjk",
-      "id": "8f2d"
     }
   ]
 }
