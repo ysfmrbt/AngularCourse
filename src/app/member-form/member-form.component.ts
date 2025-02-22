@@ -18,7 +18,9 @@ export class MemberFormComponent implements OnInit {
   // Récuperer la route actif
   // Si le id existe et a une valeur, on récupère le membre correspondant
   // Sinon, on crée un nouveau membre
+
   ngOnInit() {
+    const currentId = this.activatedRoute.snapshot.params['id'];
     this.form = new FormGroup({
       cin: new FormControl(null),
       nom: new FormControl(null),
@@ -26,13 +28,13 @@ export class MemberFormComponent implements OnInit {
       createDate: new FormControl(null),
     });
     // Route actif
-    const currentId = this.activatedRoute.snapshot.params['id'];
+
     if (currentId) {
       this.ms.getMemberById(currentId).subscribe((data) => {
         console.log(data);
         this.form = new FormGroup({
           cin: new FormControl(data.cin),
-          nom: new FormControl(data.name),
+          nom: new FormControl(data.nom),
           type: new FormControl(data.type),
           createDate: new FormControl(data.createDate),
         });
@@ -47,9 +49,17 @@ export class MemberFormComponent implements OnInit {
     }
   }
 
-  sub() {
-    console.log(this.form.value);
-    this.ms.addMember(this.form.value);
+  sub(): void {
+    const currentId = this.activatedRoute.snapshot.params['id'];
+    if (currentId) {
+      this.ms.editMember(currentId, this.form.value).subscribe(() => {
+        this.router.navigate(['/members']);
+      });
+    } else {
+      this.ms.addMember(this.form.value).subscribe(() => {
+        this.router.navigate(['/members']);
+      });
+    }
     this.router.navigate(['/members']);
   }
 }

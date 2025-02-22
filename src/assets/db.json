@@ -1,25 +1,32 @@
 {
   "members": [
     {
-      "id": 1,
-      "name": "John Doe",
       "cin": "12345678",
+      "nom": "abcdefg",
       "type": "admin",
-      "createDate": "2020-01-01"
+      "createDate": "2020-01-01",
+      "id": "1"
     },
     {
-      "id": 2,
-      "name": "Jane Doe",
       "cin": "87654321",
+      "nom": "Jane Doe",
       "type": "user",
-      "createDate": "2020-01-01"
+      "createDate": "2020-01-01",
+      "id": "2"
     },
     {
-      "id": 3,
-      "name": "John Smith",
       "cin": "12348765",
+      "nom": "abcd",
       "type": "user",
-      "createDate": "2020-01-01"
+      "createDate": "2020-01-01",
+      "id": "3"
+    },
+    {
+      "cin": "4242",
+      "nom": "hjkhk",
+      "type": "hjkhjk",
+      "createDate": "hjkhjk",
+      "id": "8f2d"
     }
   ]
 }
