@@ -1,25 +1,20 @@
 {
   "members": [
     {
-      "cin": "12345678",
-      "nom": "abcdefg",
-      "type": "admin",
-      "createDate": "2020-01-01",
-      "id": "1"
-    },
+      "id": "d2e7",
+      "cin": "12345",
+      "nom": "Youssef",
+      "type": "Student",
+      "createDate": "02/22/2025"
+    }
+  ],
+  "events": [
     {
-      "cin": "87654321",
-      "nom": "Jane Doe",
-      "type": "user",
-      "createDate": "2020-01-01",
-      "id": "2"
-    },
-    {
-      "cin": "12348765",
-      "nom": "abcd42",
-      "type": "user",
-      "createDate": "2020-01-01",
-      "id": "3"
+      "id": "1234",
+      "titre": "Event 1",
+      "lieu": "Event 1 lieu",
+      "date_debut": "02/22/2025",
+      "date_fin": "02/22/2025"
     }
   ]
 }

@@ -1,0 +1,88 @@
+mat-sidenav-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+mat-sidenav-content {
+  min-height: 100vh;
+}
+
+mat-sidenav {
+  min-width: 230px;
+}
+
+.toolbar-separator {
+  height: 64px;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.toolbar-button {
+  min-width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+mat-nav-list a {
+  display: flex !important;
+  align-items: center;
+  gap: 16px;
+  height: 48px;
+  padding: 0 16px;
+}
+
+mat-nav-list mat-icon {
+  margin-right: 0;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+}
+
+.mat-toolbar mat-icon {
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+[fxLayout] mat-icon {
+  display: flex;
+  align-items: center;
+}
+
+.username {
+  margin: 0 8px;
+}
+
+button[mat-menu-item] {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+button[mat-menu-item] mat-icon {
+  margin: 0;
+}
+.content {
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Remove margin classes from HTML */
+.mt-80 {
+  margin-top: 0 !important;
+}
+
+.mx-16 {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
