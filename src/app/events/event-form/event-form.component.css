@@ -1,0 +1,61 @@
+section {
+  max-width: 800px;
+  margin: var(--spacing-md) auto;
+  padding: var(--spacing-md);
+  background: white;
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  margin: 0 0 var(--spacing-lg);
+  font-size: 1.5rem;
+  color: var(--primary-color);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.date-range-container {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+.date-range-container mat-form-field {
+  flex: 1;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-lg);
+}
+
+.form-actions button {
+  min-width: 120px;
+}
+
+@media (max-width: 600px) {
+  section {
+    margin: var(--spacing-sm);
+    padding: var(--spacing-sm);
+  }
+
+  .date-range-container {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .form-actions {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .form-actions button {
+    width: 100%;
+  }
+}

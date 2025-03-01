@@ -1,0 +1,54 @@
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #f8f9fa;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.mat-mdc-form-field {
+  width: 100%;
+}
+
+.mdc-text-field--outlined {
+  --mdc-outlined-text-field-outline-color: rgba(0, 0, 0, 0.12);
+}
+
+// Dialog styles
+.mat-mdc-dialog-container {
+  --mdc-dialog-container-color: white;
+  padding: 24px;
+}
+
+.mat-mdc-dialog-content {
+  max-height: 65vh;
+  padding: 0;
+  margin: 24px 0;
+}
+
+.mat-mdc-dialog-content form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mat-mdc-dialog-actions {
+  padding: 0;
+  margin: 0;
+  min-height: 52px;
+  gap: 8px;
+}
+
+.mat-mdc-dialog-title {
+  margin: 0;
+  color: var(--primary-color);
+  font-size: 1.5rem;
+  font-weight: 500;
+}

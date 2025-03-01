@@ -1,0 +1,35 @@
+<h2 mat-dialog-title>{{ isEditMode ? 'Modifier l\'événement' : 'Créer un événement' }}</h2>
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field>
+      <mat-label>Titre</mat-label>
+      <input matInput placeholder="Titre de l'événement" formControlName="titre">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Lieu</mat-label>
+      <input matInput placeholder="Lieu de l'événement" formControlName="lieu">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Date de début</mat-label>
+      <input matInput [matDatepicker]="startPicker" placeholder="Date de début" formControlName="date_debut">
+      <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+      <mat-datepicker #startPicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Date de fin</mat-label>
+      <input matInput [matDatepicker]="endPicker" placeholder="Date de fin" formControlName="date_fin">
+      <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+      <mat-datepicker #endPicker></mat-datepicker>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Annuler</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()">
+    {{ isEditMode ? 'Modifier' : 'Créer' }}
+  </button>
+</mat-dialog-actions>

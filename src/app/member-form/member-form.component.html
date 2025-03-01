@@ -1,27 +1,31 @@
-<section>
-  <div>
-    <h1>Formulaire d'ajout d'un membre</h1>
-  </div>
-  <div>
-    <form [formGroup]="form" (ngSubmit)="sub()">
-      <mat-form-field>
-        <mat-label>CIN</mat-label>
-        <input matInput placeholder="CIN" formControlName="cin">
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Nom</mat-label>
-        <input matInput placeholder="Nom" formControlName="nom">
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Type</mat-label>
-        <input matInput placeholder="Type" formControlName="type">
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Date de création</mat-label>
-        <input matInput placeholder="Date de création" formControlName="createDate">
-      </mat-form-field>
-      <button type="submit" mat-button color="primary">Ajouter</button>
-    </form>
-  </div>
+<h2 mat-dialog-title>{{ isEditMode ? 'Modifier le membre' : 'Ajouter un membre' }}</h2>
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field>
+      <mat-label>CIN</mat-label>
+      <input matInput placeholder="CIN" formControlName="cin">
+    </mat-form-field>
 
-</section>
+    <mat-form-field>
+      <mat-label>Nom</mat-label>
+      <input matInput placeholder="Nom" formControlName="nom">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Type</mat-label>
+      <input matInput placeholder="Type" formControlName="type">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Date de création</mat-label>
+      <input matInput placeholder="Date de création" formControlName="createDate">
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Annuler</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()">
+    {{ isEditMode ? 'Modifier' : 'Ajouter' }}
+  </button>
+</mat-dialog-actions>

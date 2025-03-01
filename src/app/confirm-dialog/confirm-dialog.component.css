@@ -1,67 +1,49 @@
-section {
+:host {
+  display: block;
   padding: 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   min-width: 320px;
 }
 
 h2[mat-dialog-title] {
-  font-size: 1.75rem;
-  margin-bottom: 24px;
-  color: #3f51b5;
+  margin: 0 0 24px;
+  color: rgba(0, 0, 0, 0.87);
+  font-size: 1.25rem;
   font-weight: 500;
-  text-align: center;
 }
 
 mat-dialog-content {
-  text-align: center;
-  margin-bottom: 32px;
-  color: rgba(0, 0, 0, 0.87);
-  font-size: 1.1rem;
+  color: rgba(0, 0, 0, 0.54);
+  margin-bottom: 24px;
   line-height: 1.5;
 }
 
 mat-dialog-actions {
   display: flex;
-  justify-content: center;
-  gap: 20px;
-  width: 100%;
+  justify-content: flex-end;
+  gap: 16px;
   padding: 0;
-  margin-bottom: 16px;
 }
 
-button[mat-button] {
-  min-width: 120px;
-  padding: 10px 24px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+mat-dialog-actions button {
+  min-width: 100px;
+}
+
+mat-dialog-actions button[color="warn"] {
+  background-color: #f44336;
+  color: white;
 }
 
 @media (max-width: 600px) {
-  section {
-    padding: 20px;
+  :host {
+    padding: 16px;
     min-width: 280px;
-  }
-
-  h2[mat-dialog-title] {
-    font-size: 1.5rem;
-    margin-bottom: 12px;
-  }
-
-  mat-dialog-content {
-    font-size: 1rem;
-    margin-bottom: 20px;
   }
 
   mat-dialog-actions {
     flex-direction: column;
-    gap: 12px;
   }
 
-  button[mat-button] {
+  mat-dialog-actions button {
     width: 100%;
   }
 }

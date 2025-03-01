@@ -1,1 +1,74 @@
-<p>events works!</p>
+<section>
+  <div>
+    <h1>Liste des événements</h1>
+  </div>
+  <div class="actions-container">
+    <mat-form-field appearance="outline">
+      <mat-label>Filtrer</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Ex. RI" #input>
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="addEvent()">
+      <mat-icon>add</mat-icon>
+      <span>Ajouter un événement</span>
+    </button>
+  </div>
+
+  <div class="table-container">
+    <table mat-table [dataSource]="dataSource" matSort>
+      <!-- ID Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+      </ng-container>
+
+      <!-- Title Column -->
+      <ng-container matColumnDef="titre">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Titre </th>
+        <td mat-cell *matCellDef="let element"> {{element.titre}} </td>
+      </ng-container>
+
+      <!-- Location Column -->
+      <ng-container matColumnDef="lieu">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Lieu </th>
+        <td mat-cell *matCellDef="let element"> {{element.lieu}} </td>
+      </ng-container>
+
+      <!-- Start Date Column -->
+      <ng-container matColumnDef="date_debut">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Date début </th>
+        <td mat-cell *matCellDef="let element"> {{element.date_debut | date}} </td>
+      </ng-container>
+
+      <!-- End Date Column -->
+      <ng-container matColumnDef="date_fin">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Date fin </th>
+        <td mat-cell *matCellDef="let element"> {{element.date_fin | date}} </td>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button color="primary" (click)="editEvent(element)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="deleteEvent(element.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of events"></mat-paginator>
+  </div>
+</section>
+
+
+
+
+
+
+

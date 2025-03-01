@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, OnInit, Inject } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MemberService } from 'src/services/member.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Member } from 'src/models/Member';
 
 @Component({
   selector: 'app-member-form',
@@ -9,57 +10,48 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./member-form.component.css'],
 })
 export class MemberFormComponent implements OnInit {
-  constructor(
-    private ms: MemberService,
-    private router: Router,
-    private activatedRoute: ActivatedRoute
-  ) {}
   form!: FormGroup;
-  // Récuperer la route actif
-  // Si le id existe et a une valeur, on récupère le membre correspondant
-  // Sinon, on crée un nouveau membre
+  isEditMode: boolean = false;
+
+  constructor(
+    private fb: FormBuilder,
+    private memberService: MemberService,
+    private dialogRef: MatDialogRef<MemberFormComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { member?: Member }
+  ) {}
 
   ngOnInit() {
-    const currentId = this.activatedRoute.snapshot.params['id'];
-    this.form = new FormGroup({
-      cin: new FormControl(null),
-      nom: new FormControl(null),
-      type: new FormControl(null),
-      createDate: new FormControl(null),
-    });
-    // Route actif
+    this.initializeForm();
+    if (this.data?.member) {
+      this.isEditMode = true;
+      this.form.patchValue(this.data.member);
+    }
+  }
 
-    if (currentId) {
-      this.ms.getMemberById(currentId).subscribe((data) => {
-        console.log(data);
-        this.form = new FormGroup({
-          cin: new FormControl(data.cin),
-          nom: new FormControl(data.nom),
-          type: new FormControl(data.type),
-          createDate: new FormControl(data.createDate),
-        });
-      });
-    } else {
-      this.form = new FormGroup({
-        cin: new FormControl(null),
-        nom: new FormControl(null),
-        type: new FormControl(null),
-        createDate: new FormControl(null),
+  private initializeForm() {
+    this.form = this.fb.group({
+      cin: ['', [Validators.required, Validators.minLength(8)]],
+      nom: ['', [Validators.required, Validators.minLength(3)]],
+      type: ['', Validators.required],
+      createDate: ['', Validators.required],
+    });
+  }
+
+  onSubmit(): void {
+    if (this.form.valid) {
+      const memberData = this.form.value;
+      const operation = this.isEditMode
+        ? this.memberService.editMember(this.data.member!.id, memberData)
+        : this.memberService.addMember(memberData);
+
+      operation.subscribe({
+        next: () => this.dialogRef.close(true),
+        error: (error) => console.error('Error saving member:', error)
       });
     }
   }
 
-  sub(): void {
-    const currentId = this.activatedRoute.snapshot.params['id'];
-    if (currentId) {
-      this.ms.editMember(currentId, this.form.value).subscribe(() => {
-        this.router.navigate(['/members']);
-      });
-    } else {
-      this.ms.addMember(this.form.value).subscribe(() => {
-        this.router.navigate(['/members']);
-      });
-    }
-    this.router.navigate(['/members']);
+  onCancel(): void {
+    this.dialogRef.close(false);
   }
 }

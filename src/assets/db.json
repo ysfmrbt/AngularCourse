@@ -1,20 +1,62 @@
 {
   "members": [
     {
-      "id": "d2e7",
-      "cin": "12345",
+      "cin": "12138818",
       "nom": "Youssef",
       "type": "Student",
-      "createDate": "02/22/2025"
+      "createDate": "02/22/2025",
+      "id": "d2e7"
+    },
+    {
+      "id": "32dd",
+      "cin": "11138818",
+      "nom": "Youssef",
+      "type": "Student",
+      "createDate": "Today"
     }
   ],
   "events": [
     {
-      "id": "1234",
-      "titre": "Event 1",
-      "lieu": "Event 1 lieu",
-      "date_debut": "02/22/2025",
-      "date_fin": "02/22/2025"
+      "titre": "Exemple",
+      "lieu": "Sfax",
+      "date_debut": "2025-01-31T23:00:00.000Z",
+      "date_fin": "2025-03-27T23:00:00.000Z",
+      "id": "6695"
+    },
+    {
+      "id": "c11c",
+      "titre": "Nouveau évennement",
+      "lieu": "Tunisie",
+      "date_debut": "2025-03-09T23:00:00.000Z",
+      "date_fin": "2025-03-28T23:00:00.000Z"
+    },
+    {
+      "id": "f6f6",
+      "titre": "hgjfj",
+      "lieu": "ghjgfj",
+      "date_debut": "2025-02-28T23:00:00.000Z",
+      "date_fin": "2025-04-15T23:00:00.000Z"
+    },
+    {
+      "id": "569a",
+      "titre": "ghhhhhhhhhhh",
+      "lieu": "fgjfdgh",
+      "date_debut": "2025-03-05T23:00:00.000Z",
+      "date_fin": "2025-03-28T23:00:00.000Z"
+    },
+    {
+      "id": "ad8b",
+      "titre": "ytutu",
+      "lieu": "rrtyrty",
+      "date_debut": "2025-03-30T23:00:00.000Z",
+      "date_fin": "2025-05-22T23:00:00.000Z"
+    },
+    {
+      "id": "9017",
+      "titre": "mlpjlkpl",
+      "lieu": "fgd;mlk",
+      "date_debut": "2025-03-25T23:00:00.000Z",
+      "date_fin": "2025-03-27T23:00:00.000Z"
     }
   ]
 }

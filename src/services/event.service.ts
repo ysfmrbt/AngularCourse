@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
-import { Member } from '../models/Member';
+import { Event } from '../models/Event';
 
 @Injectable({
   providedIn: 'root'
 })
-export class MemberService {
-  private apiUrl = 'http://localhost:3000/members';
+export class EventService {
+  private apiUrl = 'http://localhost:3000/events';
 
   constructor(private http: HttpClient) { }
 
@@ -23,30 +23,30 @@ export class MemberService {
     return throwError(() => new Error(errorMessage));
   }
 
-  getAllMembers(): Observable<Member[]> {
-    return this.http.get<Member[]>(this.apiUrl)
+  getAllEvents(): Observable<Event[]> {
+    return this.http.get<Event[]>(this.apiUrl)
       .pipe(
         retry(2),
         catchError(this.handleError)
       );
   }
 
-  getMember(id: string): Observable<Member> {
-    return this.http.get<Member>(`${this.apiUrl}/${id}`)
+  getEvent(id: string): Observable<Event> {
+    return this.http.get<Event>(`${this.apiUrl}/${id}`)
       .pipe(catchError(this.handleError));
   }
 
-  addMember(member: Member): Observable<Member> {
-    return this.http.post<Member>(this.apiUrl, member)
+  addEvent(event: Event): Observable<Event> {
+    return this.http.post<Event>(this.apiUrl, event)
       .pipe(catchError(this.handleError));
   }
 
-  editMember(id: string, member: Member): Observable<Member> {
-    return this.http.put<Member>(`${this.apiUrl}/${id}`, member)
+  updateEvent(id: string, event: Event): Observable<Event> {
+    return this.http.put<Event>(`${this.apiUrl}/${id}`, event)
       .pipe(catchError(this.handleError));
   }
 
-  deleteMember(id: string): Observable<void> {
+  deleteEvent(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`)
       .pipe(catchError(this.handleError));
   }

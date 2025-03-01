@@ -1,88 +1,51 @@
 mat-sidenav-container {
   height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-mat-sidenav-content {
-  min-height: 100vh;
 }
 
 mat-sidenav {
-  min-width: 230px;
+  width: 250px;
 }
 
-.toolbar-separator {
-  height: 64px;
-  width: 1px;
-  background: rgba(255, 255, 255, 0.12);
+.nav-icon {
+  margin-right: 16px;
 }
 
-.toolbar-button {
-  min-width: 64px;
-  height: 64px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.content {
+  padding: 20px;
+  height: calc(100vh - 64px);
+  overflow-y: auto;
 }
 
-.avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  margin-right: 8px;
+.toolbar-spacer {
+  flex: 1 1 auto;
 }
 
-mat-nav-list a {
-  display: flex !important;
-  align-items: center;
-  gap: 16px;
-  height: 48px;
-  padding: 0 16px;
+.user-profile-button {
+  margin-left: auto;
 }
 
-mat-nav-list mat-icon {
-  margin-right: 0;
-  width: 24px;
-  height: 24px;
-  line-height: 24px;
-}
-
-.mat-toolbar mat-icon {
-  margin-right: 8px;
-  vertical-align: middle;
-}
-
-[fxLayout] mat-icon {
-  display: flex;
-  align-items: center;
-}
-
-.username {
-  margin: 0 8px;
-}
-
-button[mat-menu-item] {
+.user-profile {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-button[mat-menu-item] mat-icon {
-  margin: 0;
-}
-.content {
-  width: 100%;
-  padding: 20px;
-  box-sizing: border-box;
+.dropdown-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
 }
 
-/* Remove margin classes from HTML */
-.mt-80 {
-  margin-top: 0 !important;
-}
+@media (max-width: 600px) {
+  mat-sidenav {
+    width: 200px;
+  }
 
-.mx-16 {
-  margin-left: 0 !important;
-  margin-right: 0 !important;
+  .content {
+    padding: 16px;
+  }
+
+  .username {
+    display: none;
+  }
 }
