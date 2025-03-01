@@ -19,24 +19,17 @@ form {
   gap: var(--spacing-md);
 }
 
-.date-range-container {
-  display: flex;
-  gap: var(--spacing-md);
+mat-form-field {
+  width: 100%;
 }
 
-.date-range-container mat-form-field {
-  flex: 1;
+.mat-mdc-form-field {
+  margin-bottom: var(--spacing-sm);
 }
 
-.form-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: var(--spacing-md);
-  margin-top: var(--spacing-lg);
-}
-
-.form-actions button {
-  min-width: 120px;
+.mat-mdc-dialog-content {
+  max-height: 80vh;
+  overflow-x: hidden;
 }
 
 @media (max-width: 600px) {
@@ -45,17 +38,11 @@ form {
     padding: var(--spacing-sm);
   }
 
-  .date-range-container {
-    flex-direction: column;
-    gap: var(--spacing-sm);
+  .mat-mdc-dialog-content {
+    padding: var(--spacing-sm);
   }
 
-  .form-actions {
-    flex-direction: column;
-    gap: var(--spacing-sm);
-  }
-
-  .form-actions button {
+  mat-form-field {
     width: 100%;
   }
 }

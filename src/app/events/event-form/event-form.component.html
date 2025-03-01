@@ -12,24 +12,25 @@
     </mat-form-field>
 
     <mat-form-field>
-      <mat-label>Date de début</mat-label>
-      <input matInput [matDatepicker]="startPicker" placeholder="Date de début" formControlName="date_debut">
-      <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
-      <mat-datepicker #startPicker></mat-datepicker>
-    </mat-form-field>
+      <mat-label>Période de l'événement</mat-label>
+      <mat-date-range-input [rangePicker]="picker">
+        <input matStartDate placeholder="Date de début" formControlName="date_debut">
+        <input matEndDate placeholder="Date de fin" formControlName="date_fin">
+      </mat-date-range-input>
+      <mat-hint>JJ/MM/AAAA – JJ/MM/AAAA</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
 
-    <mat-form-field>
-      <mat-label>Date de fin</mat-label>
-      <input matInput [matDatepicker]="endPicker" placeholder="Date de fin" formControlName="date_fin">
-      <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
-      <mat-datepicker #endPicker></mat-datepicker>
+      <mat-error *ngIf="form.errors?.['dateRange']">
+        La date de fin doit être postérieure à la date de début
+      </mat-error>
     </mat-form-field>
   </form>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
   <button mat-button (click)="onCancel()">Annuler</button>
-  <button mat-raised-button color="primary" (click)="onSubmit()">
+  <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="!form.valid">
     {{ isEditMode ? 'Modifier' : 'Créer' }}
   </button>
 </mat-dialog-actions>
