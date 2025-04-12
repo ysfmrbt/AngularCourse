@@ -11,9 +11,10 @@ import { Subject, fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-member',
-  templateUrl: './member.component.html',
-  styleUrls: ['./member.component.css'],
+    selector: 'app-member',
+    templateUrl: './member.component.html',
+    styleUrls: ['./member.component.css'],
+    standalone: false
 })
 export class MemberComponent implements OnInit, AfterViewInit, OnDestroy {
   displayedColumns: string[] = [

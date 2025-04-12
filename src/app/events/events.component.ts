@@ -12,9 +12,10 @@ import { Subject, fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-events',
-  templateUrl: './events.component.html',
-  styleUrls: ['./events.component.css'],
+    selector: 'app-events',
+    templateUrl: './events.component.html',
+    styleUrls: ['./events.component.css'],
+    standalone: false
 })
 export class EventsComponent implements OnInit, AfterViewInit, OnDestroy {
   displayedColumns: string[] = [

@@ -5,9 +5,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Member } from 'src/models/Member';
 
 @Component({
-  selector: 'app-member-form',
-  templateUrl: './member-form.component.html',
-  styleUrls: ['./member-form.component.css'],
+    selector: 'app-member-form',
+    templateUrl: './member-form.component.html',
+    styleUrls: ['./member-form.component.css'],
+    standalone: false
 })
 export class MemberFormComponent implements OnInit {
   form!: FormGroup;

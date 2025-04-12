@@ -12,9 +12,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Event } from 'src/models/Event';
 
 @Component({
-  selector: 'app-event-form',
-  templateUrl: './event-form.component.html',
-  styleUrls: ['./event-form.component.css'],
+    selector: 'app-event-form',
+    templateUrl: './event-form.component.html',
+    styleUrls: ['./event-form.component.css'],
+    standalone: false
 })
 export class EventFormComponent implements OnInit {
   form!: FormGroup;
