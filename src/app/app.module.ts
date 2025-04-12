@@ -32,7 +32,10 @@ import { ArticlesComponent } from './articles/articles.component';
 import { EventsComponent } from './events/events.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { EventFormComponent } from './events/event-form/event-form.component';
-
+import { DetailsDialogComponent } from './details-dialog/details-dialog.component';
+import { firebaseConfig } from './environment';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 @NgModule({
   declarations: [
     AppComponent,
@@ -45,8 +48,11 @@ import { EventFormComponent } from './events/event-form/event-form.component';
     EventsComponent,
     DashboardComponent,
     EventFormComponent,
+    DetailsDialogComponent,
   ],
   imports: [
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireAuthModule,
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,

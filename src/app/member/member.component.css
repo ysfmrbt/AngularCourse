@@ -20,7 +20,6 @@ h1 {
 
 .actions-container mat-form-field {
   flex: 1;
-  max-width: 400px;
 }
 
 .actions-container button {

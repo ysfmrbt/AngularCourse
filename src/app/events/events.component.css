@@ -13,18 +13,19 @@ h1 {
 
 .actions-container {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  justify-content: space-between;
   gap: var(--spacing-md);
   margin-bottom: var(--spacing-xl);
 }
 
 .actions-container mat-form-field {
   flex: 1;
-  max-width: 400px;
 }
 
 .actions-container button {
-  height: 56px; /* Match the height of mat-form-field */
+  height: 56px;
+  /* Match the height of mat-form-field */
   padding: 0 var(--spacing-lg);
   white-space: nowrap;
   display: flex;
@@ -85,7 +86,6 @@ table {
 }
 
 .mat-column-action {
-  width: 120px;
   text-align: right;
 }
 

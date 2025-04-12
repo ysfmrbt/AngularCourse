@@ -1,0 +1,44 @@
+<div class="event-details-dialog">
+  <h2 mat-dialog-title>Détails de l'événement</h2>
+
+  <mat-dialog-content>
+    <div class="event-header">
+      <h1>{{data.titre}}</h1>
+      <div class="event-id">ID: {{data.id}}</div>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-item">
+        <mat-icon>location_on</mat-icon>
+        <div class="info-content">
+          <label>Lieu</label>
+          <span>{{data.lieu}}</span>
+        </div>
+      </div>
+
+      <div class="info-item">
+        <mat-icon>event</mat-icon>
+        <div class="info-content">
+          <label>Date de début</label>
+          <span>{{data.date_debut | date:'dd/MM/yyyy'}}</span>
+        </div>
+      </div>
+
+      <div class="info-item">
+        <mat-icon>event_busy</mat-icon>
+        <div class="info-content">
+          <label>Date de fin</label>
+          <span>{{data.date_fin | date:'dd/MM/yyyy'}}</span>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close color="primary">Fermer</button>
+  </mat-dialog-actions>
+</div>
+
+
+
+

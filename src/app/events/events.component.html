@@ -5,7 +5,7 @@
   <div class="actions-container">
     <mat-form-field appearance="outline">
       <mat-label>Filtrer</mat-label>
-      <input matInput (keyup)="applyFilter($event)" placeholder="Ex. RI" #input>
+      <input matInput placeholder="Ex. RI" #input>
       <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
     <button mat-raised-button color="primary" (click)="addEvent()">
@@ -53,6 +53,9 @@
           <button mat-icon-button color="primary" (click)="editEvent(element)">
             <mat-icon>edit</mat-icon>
           </button>
+          <button mat-icon-button color="secondary" (click)="viewEvent(element.id)">
+            <mat-icon>visibility</mat-icon>
+          </button>
           <button mat-icon-button color="warn" (click)="deleteEvent(element.id)">
             <mat-icon>delete</mat-icon>
           </button>
@@ -65,10 +68,3 @@
     <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of events"></mat-paginator>
   </div>
 </section>
-
-
-
-
-
-
-
