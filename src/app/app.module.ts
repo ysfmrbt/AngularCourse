@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // Material Imports
@@ -36,46 +36,39 @@ import { DetailsDialogComponent } from './details-dialog/details-dialog.componen
 import { firebaseConfig } from './environment';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
-@NgModule({
-  declarations: [
-    AppComponent,
-    MemberComponent,
-    MemberFormComponent,
-    ConfirmDialogComponent,
-    TemplateComponent,
-    ToolsComponent,
-    ArticlesComponent,
-    EventsComponent,
-    DashboardComponent,
-    EventFormComponent,
-    DetailsDialogComponent,
-  ],
-  imports: [
-    AngularFireModule.initializeApp(firebaseConfig),
-    AngularFireAuthModule,
-    BrowserModule,
-    BrowserAnimationsModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    // Material Modules
-    MatButtonModule,
-    MatIconModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatTableModule,
-    MatDialogModule,
-    MatSidenavModule,
-    MatToolbarModule,
-    MatListModule,
-    MatMenuModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatSortModule,
-    MatPaginatorModule,
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        MemberComponent,
+        MemberFormComponent,
+        ConfirmDialogComponent,
+        TemplateComponent,
+        ToolsComponent,
+        ArticlesComponent,
+        EventsComponent,
+        DashboardComponent,
+        EventFormComponent,
+        DetailsDialogComponent,
+    ],
+    bootstrap: [AppComponent], imports: [AngularFireModule.initializeApp(firebaseConfig),
+        AngularFireAuthModule,
+        BrowserModule,
+        BrowserAnimationsModule,
+        AppRoutingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        // Material Modules
+        MatButtonModule,
+        MatIconModule,
+        MatInputModule,
+        MatFormFieldModule,
+        MatTableModule,
+        MatDialogModule,
+        MatSidenavModule,
+        MatToolbarModule,
+        MatListModule,
+        MatMenuModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatSortModule,
+        MatPaginatorModule], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule {}
