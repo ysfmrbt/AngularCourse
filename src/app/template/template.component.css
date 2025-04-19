@@ -1,61 +1,88 @@
-mat-sidenav-container {
-  height: 100vh;
+/* Remove most Material-specific styles, rely on PrimeNG theme + PrimeFlex */
+
+.layout-wrapper {
+  display: flex;
+  min-height: 100vh;
 }
 
-mat-sidenav {
-  width: 250px;
+/* Customizations for sidebar/toolbar if needed */
+/* Removed default sidebar padding since we use PrimeFlex within the template */
+:host ::ng-deep .p-sidebar .p-sidebar-content {
+ padding: 0;
 }
 
+/* Removed unused styles for .layout-menu */
+/*
+.layout-menu a {
+  text-decoration: none;
+}
+
+.layout-menu .nav-icon {
+  margin-right: var(--spacing-md); 
+  font-size: 1.2rem; 
+}
+*/
+
+/* Add style for the new active route class */
+.active-route-class {
+  background-color: var(--surface-100); /* Use PrimeNG theme variable */
+  color: var(--primary-color) !important; /* Ensure text color overrides default link color */
+  font-weight: 600; /* PrimeNG uses 600 for semibold */
+}
+
+/* Ensure icon within the active link also gets the primary color */
+.active-route-class i {
+  color: var(--primary-color) !important;
+}
+
+/* Removed unused styles for .active-list-item */
+/*
 .active-list-item {
-  background-color: rgba(63, 81, 181, 0.1); /* Use primary color with low opacity */
+  background-color: var(--surface-100); 
   color: var(--primary-color);
-  font-weight: 500;
+  font-weight: 600; 
 }
 
 .active-list-item .nav-icon {
   color: var(--primary-color);
 }
+*/
 
-.nav-icon {
-  margin-right: var(--spacing-md); /* Use variable */
+.layout-main-container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000; /* Ensure toolbar stays on top */
+  background-color: var(--surface-card); /* Use PrimeNG theme variable */
+  border-bottom: 1px solid var(--surface-border);
+  padding: 0.5rem 1rem; /* Adjust padding */
 }
 
 .content {
-  padding: var(--spacing-lg); /* Use variable */
-  height: calc(100vh - 64px);
-  overflow-y: auto;
+  flex-grow: 1;
+  /* padding removed, using p-4 in template */
+  overflow-y: auto; /* Keep scrolling for content */
+  background-color: var(--surface-ground); /* Use PrimeNG theme variable */
 }
 
-.toolbar-spacer {
-  flex: 1 1 auto;
+/* Adjust user profile button alignment if needed */
+/* PrimeFlex's justify-content-end on the toolbar group usually handles this */
+
+/* Responsive adjustments (Leverage PrimeFlex classes in template where possible) */
+.username.hidden {
+  display: none;
 }
 
-.user-profile-button {
-  margin-left: auto;
-}
-
-.user-profile {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm); /* Use variable */
-}
-
-.dropdown-icon {
-  font-size: 20px;
-  width: 20px;
-  height: 20px;
-}
-
+/* Media query fallback if PrimeFlex isn't sufficient */
+/*
 @media (max-width: 600px) {
-  mat-sidenav {
-    width: 200px;
-  }
-
-  .content {
-    padding: var(--spacing-md); /* Use variable */
-  }
-
   .username {
     display: none;
   }
 }
+*/

@@ -1,71 +1,71 @@
-<section>
-  <div>
+<section class="p-4">
+  <div class="p-mb-4">
     <h1>Tableau des membres</h1>
   </div>
-  <div class="actions-container">
-    <mat-form-field appearance="outline">
-      <mat-label>Filtrer</mat-label>
-      <input matInput placeholder="Ex. John" #input>
-      <mat-icon matSuffix>search</mat-icon>
-    </mat-form-field>
-    <button mat-raised-button color="primary" (click)="addMember()">
-      <mat-icon>add</mat-icon>
-      <span>Ajouter un membre</span>
-    </button>
+
+  <div class="actions-container mb-4 flex flex-column sm:flex-row justify-content-between align-items-center gap-2">
+    <p-iconfield iconPosition="left">
+      <p-inputicon class="pi pi-search"></p-inputicon>
+      <input pInputText type="text" #input placeholder="Filtrer..." class="w-full"/>
+    </p-iconfield>
+
+    <p-button label="Ajouter un membre" icon="pi pi-plus" (click)="addMember()" styleClass="w-full sm:w-auto"></p-button>
   </div>
 
-  <div class="table-container">
-    <table mat-table [dataSource]="dataSource" matSort>
-      <!-- ID Column -->
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
-        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-      </ng-container>
-
-      <!-- CIN Column -->
-      <ng-container matColumnDef="cin">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> CIN </th>
-        <td mat-cell *matCellDef="let element"> {{element.cin}} </td>
-      </ng-container>
-
-      <!-- Name Column -->
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> NAME </th>
-        <td mat-cell *matCellDef="let element"> {{element.nom}} </td>
-      </ng-container>
-
-      <!-- Type Column -->
-      <ng-container matColumnDef="type">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> TYPE </th>
-        <td mat-cell *matCellDef="let element"> {{element.type}} </td>
-      </ng-container>
-
-      <!-- CreateDate Column -->
-      <ng-container matColumnDef="createDate">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> DATE </th>
-        <td mat-cell *matCellDef="let element"> {{element.createDate}} </td>
-      </ng-container>
-
-      <!-- Actions Column -->
-      <ng-container matColumnDef="action">
-        <th mat-header-cell *matHeaderCellDef> Actions </th>
-        <td mat-cell *matCellDef="let element">
-          <button mat-icon-button color="primary" (click)="editMember(element)">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-icon-button color="secondary" (click)="viewMember(element.id)">
-            <mat-icon>visibility</mat-icon>
-          </button>
-          <button mat-icon-button color="warn" (click)="deleteMember(element.id)">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-
-    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of members"></mat-paginator>
+  <div class="table-container card">
+    <p-table
+      #dtMembers
+      [value]="members"
+      dataKey="id"
+      [rows]="10"
+      [loading]="loading"
+      [rowsPerPageOptions]="[5, 10, 25, 100]"
+      [paginator]="true"
+      paginatorPosition="bottom"
+      [globalFilterFields]="['id', 'cin', 'nom', 'type']"
+      [tableStyle]="{ 'min-width': '75rem' }"
+      styleClass="p-datatable-striped p-datatable-gridlines"
+    >
+      <ng-template pTemplate="caption">
+        <div class="flex align-items-center justify-content-end">
+          
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="id" style="width:10%">ID <p-sortIcon field="id"></p-sortIcon></th>
+          <th pSortableColumn="cin" style="width:15%">CIN <p-sortIcon field="cin"></p-sortIcon></th>
+          <th pSortableColumn="nom" style="width:25%">NAME <p-sortIcon field="nom"></p-sortIcon></th>
+          <th pSortableColumn="type" style="width:20%">TYPE <p-sortIcon field="type"></p-sortIcon></th>
+          <th pSortableColumn="createDate" style="width:20%">DATE <p-sortIcon field="createDate"></p-sortIcon></th>
+          <th style="width:10%">Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-member>
+        <tr>
+          <td>{{ member.id }}</td>
+          <td>{{ member.cin }}</td>
+          <td>{{ member.nom }}</td>
+          <td>{{ member.type }}</td>
+          <td>{{ member.createDate | date: 'shortDate' }}</td>
+          <td>
+             <p-button icon="pi pi-pencil" styleClass="p-button-text p-button-rounded p-button-info" (click)="editMember(member)"></p-button>
+             <p-button icon="pi pi-eye" styleClass="p-button-text p-button-rounded p-button-secondary" (click)="viewMember(member.id)"></p-button>
+             <p-button icon="pi pi-trash" styleClass="p-button-text p-button-rounded p-button-danger" (click)="deleteMember(member.id)"></p-button>
+          </td>
+        </tr>
+      </ng-template>
+       <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="6" class="text-center">Aucun membre trouvé.</td>
+            </tr>
+        </ng-template>
+       <ng-template pTemplate="paginatorleft">
+           
+       </ng-template>
+       <ng-template pTemplate="paginatorright">
+          
+       </ng-template>
+    </p-table>
   </div>
 </section>

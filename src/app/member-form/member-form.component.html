@@ -1,31 +1,37 @@
 <h2 mat-dialog-title>{{ isEditMode ? 'Modifier le membre' : 'Ajouter un membre' }}</h2>
-<mat-dialog-content>
-  <form [formGroup]="form">
-    <mat-form-field>
-      <mat-label>CIN</mat-label>
-      <input matInput placeholder="CIN" formControlName="cin">
-    </mat-form-field>
+<form [formGroup]="memberForm" (ngSubmit)="onSubmit()" class="p-fluid p-4">
+  <!-- CIN Field -->
+  <div class="field mb-4">
+    <label for="cin" class="block font-semibold mb-2">CIN</label>
+    <input id="cin" type="text" pInputText placeholder="CIN" formControlName="cin" class="w-full">
+    <small class="p-error block" *ngIf="memberForm.get('cin')?.invalid && memberForm.get('cin')?.touched">
+      CIN est requis (e.g., 8 caractères).
+    </small>
+  </div>
 
-    <mat-form-field>
-      <mat-label>Nom</mat-label>
-      <input matInput placeholder="Nom" formControlName="nom">
-    </mat-form-field>
+  <!-- Name Field -->
+  <div class="field mb-4">
+    <label for="nom" class="block font-semibold mb-2">Nom</label>
+    <input id="nom" type="text" pInputText placeholder="Nom" formControlName="nom" class="w-full">
+    <small class="p-error block" *ngIf="memberForm.get('nom')?.invalid && memberForm.get('nom')?.touched">
+      Nom est requis.
+    </small>
+  </div>
 
-    <mat-form-field>
-      <mat-label>Type</mat-label>
-      <input matInput placeholder="Type" formControlName="type">
-    </mat-form-field>
+  <!-- Type Field -->
+  <div class="field mb-4">
+    <label for="type" class="block font-semibold mb-2">Type</label>
+    <input id="type" type="text" pInputText placeholder="Type (e.g., Enseignant, Etudiant)" formControlName="type" class="w-full">
+     <small class="p-error block" *ngIf="memberForm.get('type')?.invalid && memberForm.get('type')?.touched">
+      Type est requis.
+    </small>
+  </div>
 
-    <mat-form-field>
-      <mat-label>Date de création</mat-label>
-      <input matInput placeholder="Date de création" formControlName="createDate">
-    </mat-form-field>
-  </form>
-</mat-dialog-content>
+  <!-- Create Date Field (Display Only) -->
+   <div class="field mb-4" *ngIf="isEditMode && memberForm.get('createDate')?.value">
+    <label for="createDate" class="block font-semibold mb-2">Date de création</label>
+    <input id="createDate" type="text" pInputText formControlName="createDate" class="w-full" [readonly]="true">
+  </div>
 
-<mat-dialog-actions align="end">
-  <button mat-button (click)="onCancel()">Annuler</button>
-  <button mat-raised-button color="primary" (click)="onSubmit()">
-    {{ isEditMode ? 'Modifier' : 'Ajouter' }}
-  </button>
-</mat-dialog-actions>
+</form>
+<!-- Buttons handled by DialogService -->

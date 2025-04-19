@@ -1,0 +1,10 @@
+/* src/app/login/login.component.css */
+.login-container {
+  /* Optional: Add a background */
+   background-color: var(--p-surface-ground);
+}
+
+/* Ensure p-password takes full width correctly if needed */
+ :host ::ng-deep .p-password input {
+    width: 100%;
+}

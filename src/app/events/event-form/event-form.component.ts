@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -8,85 +8,123 @@ import {
   ValidatorFn,
 } from '@angular/forms';
 import { EventService } from 'src/services/event.service';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { Event } from 'src/models/Event';
+import { FormBuilder } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+
+// PrimeNG Imports
+import { InputTextModule } from 'primeng/inputtext';
+import { CalendarModule } from 'primeng/calendar';
+import { ButtonModule } from 'primeng/button';
+import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-event-form',
     templateUrl: './event-form.component.html',
     styleUrls: ['./event-form.component.css'],
-    standalone: false
+    standalone: true,
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        InputTextModule,
+        CalendarModule,
+        ButtonModule
+    ],
 })
 export class EventFormComponent implements OnInit {
-  form!: FormGroup;
+  eventForm: FormGroup;
   isEditMode = false;
+  eventId: string | null = null;
 
   constructor(
+    private fb: FormBuilder,
     private eventService: EventService,
-    private dialogRef: MatDialogRef<EventFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { event?: Event }
+    private router: Router,
+    public ref: DynamicDialogRef,
+    public config: DynamicDialogConfig,
+    private messageService: MessageService
   ) {
-    console.info('Données reçues :', data);
+    this.eventForm = this.fb.group({
+      titre: ['', Validators.required],
+      lieu: ['', Validators.required],
+      date_debut: [null as Date | null, Validators.required],
+      date_fin: [null as Date | null, Validators.required],
+    }, { validators: this.dateRangeValidator() });
   }
 
   ngOnInit() {
-    this.initializeForm();
-    if (this.data?.event) {
-      this.isEditMode = true;
-      this.form.patchValue({
-        titre: this.data.event.titre,
-        lieu: this.data.event.lieu,
-        date_debut: new Date(this.data.event.date_debut),
-        date_fin: new Date(this.data.event.date_fin),
-      });
-    }
-  }
+    const eventToEdit = this.config.data?.event;
 
-  private initializeForm() {
-    this.form = new FormGroup(
-      {
-        titre: new FormControl('', [Validators.required]),
-        lieu: new FormControl('', [Validators.required]),
-        date_debut: new FormControl<Date | null>(null, [Validators.required]),
-        date_fin: new FormControl<Date | null>(null, [Validators.required]),
-      },
-      { validators: this.dateRangeValidator() }
-    );
+    if (eventToEdit) {
+      this.isEditMode = true;
+      this.eventId = eventToEdit.id;
+      const patchData = {
+        ...eventToEdit,
+        date_debut: eventToEdit.date_debut ? new Date(eventToEdit.date_debut) : null,
+        date_fin: eventToEdit.date_fin ? new Date(eventToEdit.date_fin) : null
+      };
+      this.eventForm.patchValue(patchData);
+    }
   }
 
   private dateRangeValidator(): ValidatorFn {
     return (group: AbstractControl): ValidationErrors | null => {
-      const start = group.get('date_debut')?.value;
-      const end = group.get('date_fin')?.value;
-
-      if (start && end) {
-        return start < end ? null : { dateRange: true };
+      const startDate = group.get('date_debut')?.value;
+      const endDate = group.get('date_fin')?.value;
+      if (startDate && endDate && new Date(endDate) < new Date(startDate)) {
+        group.get('date_fin')?.setErrors({ ...(group.get('date_fin')?.errors || {}), dateRange: true });
+        return { dateRange: true };
+      }
+      if (group.get('date_fin')?.hasError('dateRange')) {
+         const errors = group.get('date_fin')?.errors;
+         if (errors) {
+            delete errors['dateRange'];
+            if (Object.keys(errors).length === 0) {
+               group.get('date_fin')?.setErrors(null);
+            } else {
+               group.get('date_fin')?.setErrors(errors);
+            }
+         }
       }
       return null;
     };
   }
 
-  onSubmit() {
-    if (this.form.valid) {
-      const formValue = {
-        ...this.form.value,
-        date_debut: this.form.value.date_debut.toISOString(),
-        date_fin: this.form.value.date_fin.toISOString(),
-      };
-
-      if (this.isEditMode) {
-        this.eventService
-          .updateEvent(String(this.data.event!.id), formValue)
-          .subscribe(() => this.dialogRef.close(true));
-      } else {
-        this.eventService
-          .addEvent(formValue)
-          .subscribe(() => this.dialogRef.close(true));
-      }
+  onSubmit(): void {
+    if (this.eventForm.invalid) {
+       this.eventForm.markAllAsTouched();
+       this.messageService.add({severity:'warn', summary: 'Attention', detail: 'Veuillez corriger les erreurs dans le formulaire.'});
+       return;
     }
+
+    const formValue = this.eventForm.value;
+    const eventData: Partial<Event> = {
+      ...formValue,
+      date_debut: formValue.date_debut?.toISOString(),
+      date_fin: formValue.date_fin?.toISOString(),
+    };
+
+    const operation = this.isEditMode && this.eventId
+      ? this.eventService.updateEvent(this.eventId, eventData as Event)
+      : this.eventService.addEvent(eventData as Event);
+
+    operation.subscribe({
+      next: (response) => {
+        const successMsg = this.isEditMode ? 'Événement mis à jour' : 'Événement ajouté';
+        this.messageService.add({severity:'success', summary: 'Succès', detail: successMsg });
+        this.ref.close(true);
+      },
+      error: (error) => {
+        console.error('Error saving event:', error);
+        this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Impossible d\'enregistrer l\'événement.'});
+      }
+    });
   }
 
   onCancel(): void {
-    this.dialogRef.close(false);
+    this.ref.close();
   }
 }

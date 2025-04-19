@@ -1,71 +1,94 @@
-<mat-sidenav-container>
+<div class="layout-wrapper">
+  <!-- PrimeNG Sidebar for Navigation -->
+  <p-sidebar [(visible)]="sidebarVisible" [showCloseIcon]="true">
+    <ng-template pTemplate="header"> Navigation </ng-template>
+    <ng-template pTemplate="content">
+      <div class="flex flex-column gap-2">
+        <!-- Reduced padding on links from p-3 to p-2 -->
+        <a pRipple
+           routerLink="/dashboard"
+           routerLinkActive="active-route-class"
+           [routerLinkActiveOptions]="{exact: true}"
+           (click)="sidebarVisible = false"
+           class="p-2 border-round hover:surface-100 transition-duration-150 cursor-pointer no-underline text-700">
+          <i class="pi pi-home mr-2"></i>
+          <span>Dashboard</span>
+        </a>
+        <a pRipple
+           routerLink="/members"
+           routerLinkActive="active-route-class"
+           [routerLinkActiveOptions]="{exact: true}"
+           (click)="sidebarVisible = false"
+           class="p-2 border-round hover:surface-100 transition-duration-150 cursor-pointer no-underline text-700">
+           <i class="pi pi-users mr-2"></i>
+          <span>Members</span>
+        </a>
+        <a pRipple
+           routerLink="/tools"
+           routerLinkActive="active-route-class"
+           [routerLinkActiveOptions]="{exact: true}"
+           (click)="sidebarVisible = false"
+           class="p-2 border-round hover:surface-100 transition-duration-150 cursor-pointer no-underline text-700">
+          <i class="pi pi-wrench mr-2"></i>
+          <span>Tools</span>
+        </a>
+        <a pRipple
+           routerLink="/articles"
+           routerLinkActive="active-route-class"
+           [routerLinkActiveOptions]="{exact: true}"
+           (click)="sidebarVisible = false"
+           class="p-2 border-round hover:surface-100 transition-duration-150 cursor-pointer no-underline text-700">
+           <i class="pi pi-book mr-2"></i>
+           <span>Articles</span>
+        </a>
+        <a pRipple
+           routerLink="/events"
+           routerLinkActive="active-route-class"
+           [routerLinkActiveOptions]="{exact: true}"
+           (click)="sidebarVisible = false"
+           class="p-2 border-round hover:surface-100 transition-duration-150 cursor-pointer no-underline text-700">
+           <i class="pi pi-calendar mr-2"></i>
+           <span>Events</span>
+        </a>
+        <!-- Add more links as needed with routerLinkActive -->
+      </div>
+    </ng-template>
+  </p-sidebar>
 
-  <!-- The side nav -->
-  <mat-sidenav #drawer fixedInViewport="true" mode="over" opened="false">
-    <mat-toolbar color="primary">
-      <mat-icon class="nav-icon">school</mat-icon>
-      <span>Laboratoire</span>
-    </mat-toolbar>
-    <mat-nav-list>
-      <a mat-list-item routerLink="/dashboard" routerLinkActive="active-list-item">
-        <mat-icon class="nav-icon">dashboard</mat-icon>
-        <span>Dashboard</span>
-      </a>
-      <a mat-list-item routerLink="/members" routerLinkActive="active-list-item">
-        <mat-icon class="nav-icon">group</mat-icon>
-        <span>Members</span>
-      </a>
-      <a mat-list-item routerLink="/tools" routerLinkActive="active-list-item">
-        <mat-icon class="nav-icon">build</mat-icon>
-        <span>Tools</span>
-      </a>
-      <a mat-list-item routerLink="/articles" routerLinkActive="active-list-item">
-        <mat-icon class="nav-icon">article</mat-icon>
-        <span>Articles</span>
-      </a>
-      <a mat-list-item routerLink="/events" routerLinkActive="active-list-item">
-        <mat-icon class="nav-icon">event</mat-icon>
-        <span>Events</span>
-      </a>
-    </mat-nav-list>
-  </mat-sidenav>
-  <!-- EO: Side nav-->
+  <!-- Main Content Area -->
+  <div class="layout-main-container">
+    <!-- PrimeNG Toolbar -->
+    <p-toolbar styleClass="topbar">
+        <ng-template pTemplate="start">
+            <p-button type="button" icon="pi pi-bars" (click)="sidebarVisible = true" [text]="true" [rounded]="true"></p-button>
+             <span class="font-semibold text-primary text-lg ml-2">Lab</span>
+        </ng-template>
 
-  <!-- Side nav content-->
-  <mat-sidenav-content>
-    <mat-toolbar color="primary">
-      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
-        <mat-icon>menu</mat-icon>
-      </button>
-      <span>Lab</span>
+        <ng-template pTemplate="end">
+            <p-button
+              *ngIf="loggedInUser"
+              type="button"
+              (click)="userMenu.toggle($event)"
+              icon="pi pi-user"
+              styleClass="user-profile-button"
+              [text]="true">
+                <span class="username mx-2" [ngClass]="{'hidden': !showUsername}">{{ loggedInUser }}</span>
+                <i class="pi pi-angle-down"></i>
+            </p-button>
+            <p-menu #userMenu [model]="userMenuItems" [popup]="true"></p-menu>
+        </ng-template>
+    </p-toolbar>
 
-      <div fxFlex></div>
-
-      <button [matMenuTriggerFor]="userMenu" mat-button class="user-profile-button">
-        <div class="user-profile">
-          <mat-icon>account_circle</mat-icon>
-          <span class="username" fxHide.xs>User Name</span>
-          <mat-icon class="dropdown-icon">arrow_drop_down</mat-icon>
-        </div>
-      </button>
-
-      <mat-menu #userMenu="matMenu" [overlapTrigger]="false">
-        <button mat-menu-item>
-          <mat-icon>account_box</mat-icon>
-          <span>Profile</span>
-        </button>
-        <button mat-menu-item>
-          <mat-icon>exit_to_app</mat-icon>
-          <span>Logout</span>
-        </button>
-      </mat-menu>
-    </mat-toolbar>
-
-    <div class="content">
+    <!-- Content Outlet -->
+    <div class="content p-4">
       <router-outlet></router-outlet>
     </div>
+  </div>
 
-  </mat-sidenav-content>
-  <!-- EO: Side nav content-->
+  <!-- Add ConfirmDialog container here -->
+  <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
 
-</mat-sidenav-container>
+  <!-- Add Toast container here -->
+  <p-toast></p-toast>
+
+</div>

@@ -1,8 +1,8 @@
-<section>
-  <h2 mat-dialog-title>Confirmation</h2>
-  <mat-dialog-content>{{ data.message }}</mat-dialog-content>
-  <mat-dialog-actions>
-    <button mat-button color="warn" [mat-dialog-close]="true">Supprimer</button>
-    <button mat-button mat-dialog-close>Annuler</button>
-  </mat-dialog-actions>
-</section>
+<div class="p-4">
+  <h2 class="mb-3 text-lg font-semibold">Confirmation</h2>
+  <p class="mb-4">{{ message }}</p>
+  <div class="flex justify-content-end gap-2">
+    <p-button label="Annuler" severity="secondary" (click)="onCancel()"></p-button>
+    <p-button label="Supprimer" severity="danger" (click)="onConfirm()"></p-button>
+  </div>
+</div>

@@ -1,42 +1,69 @@
-<div class="event-details-dialog">
-  <h2 mat-dialog-title>Détails de l'événement</h2>
+<div class="p-4">
+  <div *ngIf="isLoading" class="text-center p-4">
+    <p-progressSpinner></p-progressSpinner>
+  </div>
+  <div *ngIf="errorLoading && !isLoading" class="text-center p-4 text-red-500">
+    Erreur lors du chargement des détails.
+  </div>
 
-  <mat-dialog-content>
-    <div class="event-header">
-      <h1>{{data.titre}}</h1>
-      <div class="event-id">ID: {{data.id}}</div>
+  <div *ngIf="!isLoading && !errorLoading && details">
+    <div class="mb-4">
+        <div class="text-sm text-color-secondary mb-1">ID: {{ details.id }}</div>
+        <h1 *ngIf="isEvent(details)" class="text-xl font-semibold m-0">{{ details.titre }}</h1>
+        <h1 *ngIf="!isEvent(details)" class="text-xl font-semibold m-0">{{ details.nom }}</h1>
     </div>
 
-    <div class="info-grid">
-      <div class="info-item">
-        <mat-icon>location_on</mat-icon>
-        <div class="info-content">
-          <label>Lieu</label>
-          <span>{{data.lieu}}</span>
-        </div>
-      </div>
+    <div class="grid">
+        <ng-container *ngIf="isEvent(details)">
+            <div class="col-12 md:col-6 flex align-items-center gap-2 mb-3">
+                <i class="pi pi-map-marker text-xl text-primary"></i>
+                <div>
+                    <label class="block text-sm text-color-secondary mb-1">Lieu</label>
+                    <span class="block font-medium">{{ details.lieu }}</span>
+                </div>
+            </div>
+            <div class="col-12 md:col-6 flex align-items-center gap-2 mb-3">
+                <i class="pi pi-calendar text-xl text-primary"></i>
+                <div>
+                    <label class="block text-sm text-color-secondary mb-1">Date de début</label>
+                    <span class="block font-medium">{{ details.date_debut | date:'dd/MM/yyyy' }}</span>
+                </div>
+            </div>
+             <div class="col-12 md:col-6 flex align-items-center gap-2 mb-3">
+                <i class="pi pi-calendar-times text-xl text-primary"></i>
+                <div>
+                    <label class="block text-sm text-color-secondary mb-1">Date de fin</label>
+                    <span class="block font-medium">{{ details.date_fin | date:'dd/MM/yyyy' }}</span>
+                </div>
+            </div>
+        </ng-container>
 
-      <div class="info-item">
-        <mat-icon>event</mat-icon>
-        <div class="info-content">
-          <label>Date de début</label>
-          <span>{{data.date_debut | date:'dd/MM/yyyy'}}</span>
-        </div>
-      </div>
+         <ng-container *ngIf="!isEvent(details)">
+            <div class="col-12 md:col-6 flex align-items-center gap-2 mb-3">
+                <i class="pi pi-id-card text-xl text-primary"></i>
+                <div>
+                    <label class="block text-sm text-color-secondary mb-1">CIN</label>
+                    <span class="block font-medium">{{ details.cin }}</span>
+                </div>
+            </div>
+             <div class="col-12 md:col-6 flex align-items-center gap-2 mb-3">
+                <i class="pi pi-tag text-xl text-primary"></i>
+                <div>
+                    <label class="block text-sm text-color-secondary mb-1">Type</label>
+                    <span class="block font-medium">{{ details.type }}</span>
+                </div>
+            </div>
+            <div class="col-12 md:col-6 flex align-items-center gap-2 mb-3">
+                <i class="pi pi-calendar-plus text-xl text-primary"></i>
+                <div>
+                    <label class="block text-sm text-color-secondary mb-1">Date de création</label>
+                    <span class="block font-medium">{{ details.createDate | date:'dd/MM/yyyy' }}</span>
+                </div>
+            </div>
+        </ng-container>
 
-      <div class="info-item">
-        <mat-icon>event_busy</mat-icon>
-        <div class="info-content">
-          <label>Date de fin</label>
-          <span>{{data.date_fin | date:'dd/MM/yyyy'}}</span>
-        </div>
-      </div>
     </div>
-  </mat-dialog-content>
-
-  <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close color="primary">Fermer</button>
-  </mat-dialog-actions>
+  </div>
 </div>
 
 

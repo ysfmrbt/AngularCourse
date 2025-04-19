@@ -1,43 +1,70 @@
 import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy, ElementRef } from '@angular/core';
+import { CommonModule, DatePipe } from '@angular/common'; // Import CommonModule & DatePipe
 import { MemberService } from '../../services/member.service';
 import { Member } from '../../models/Member';
-import { MatDialog } from '@angular/material/dialog';
+// import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { MemberFormComponent } from '../member-form/member-form.component';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { DetailsDialogComponent } from '../details-dialog/details-dialog.component'; // Import DetailsDialogComponent
+// import { MatPaginator } from '@angular/material/paginator';
+// import { MatSort } from '@angular/material/sort';
+// import { MatTableDataSource } from '@angular/material/table';
 import { Subject, fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
+import { ConfirmationService, MessageService, PrimeTemplate } from 'primeng/api'; // Import services
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog'; // Import DialogService
+import { Table, TableModule } from 'primeng/table'; // Use 'Table' type here
+import { ButtonModule, Button } from 'primeng/button';
+import { InputTextModule, InputText } from 'primeng/inputtext';
+import { RippleModule } from 'primeng/ripple';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+import { ConfirmDialogModule } from 'primeng/confirmdialog'; // Import ConfirmDialogModule
+import { ToastModule } from 'primeng/toast'; // Import ToastModule
+// Dialog/Confirmation imports later
+
+// Temporary replacements for Material types
+type MatDialog = any; 
+type MatPaginator = any; 
+type MatSort = any; 
+type MatTableDataSource<T> = any; 
 
 @Component({
     selector: 'app-member',
     templateUrl: './member.component.html',
     styleUrls: ['./member.component.css'],
-    standalone: false
+    standalone: true,
+    imports: [ 
+      CommonModule,
+      TableModule,
+      ButtonModule,
+      InputTextModule,
+      ConfirmDialogModule,
+      ToastModule,
+      IconFieldModule, // Add IconFieldModule
+      InputIconModule  // Add InputIconModule
+    ]
 })
 export class MemberComponent implements OnInit, AfterViewInit, OnDestroy {
-  displayedColumns: string[] = [
-    'id',
-    'cin',
-    'name',
-    'type',
-    'createDate',
-    'action',
-  ];
-  dataSource!: MatTableDataSource<Member>;
+  members: Member[] = []; // Use direct array
+  loading: boolean = true; // Add loading flag
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild('input') input!: ElementRef; // Get reference to input element
+  @ViewChild('dtMembers') dtMembers!: Table; // Updated ViewChild ref and type
+  @ViewChild('input') input!: ElementRef; // Filter input reference
 
-  private destroy$ = new Subject<void>(); // Subject to manage subscription cleanup
+  private destroy$ = new Subject<void>();
+  ref: DynamicDialogRef | undefined; // To store dialog reference
 
   constructor(
     private memberService: MemberService,
-    private dialog: MatDialog
+    private confirmationService: ConfirmationService, // Inject
+    private messageService: MessageService, // Inject
+    private dialogService: DialogService // Inject DialogService
+    // private dialog: MatDialog // Commented out
   ) {
-    this.dataSource = new MatTableDataSource<Member>([]);
+    // Replace MatTableDataSource instantiation
+    // this.dataSource = new MatTableDataSource<Member>([]);
+    this.members = []; // Basic mock object 
   }
 
   ngOnInit() {
@@ -45,28 +72,13 @@ export class MemberComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-
-    // Custom filter predicate
-    this.dataSource.filterPredicate = (data: Member, filter: string) => {
-      const searchStr = filter.toLowerCase();
-      // Ensure all fields are checked, handling potential undefined/null values if necessary
-      return (
-        data.id?.toString().toLowerCase().includes(searchStr) ||
-        data.cin?.toLowerCase().includes(searchStr) ||
-        data.nom?.toLowerCase().includes(searchStr) ||
-        data.type?.toLowerCase().includes(searchStr)
-      );
-    };
-
-    // Apply debounce to filter input
-    fromEvent<KeyboardEvent>(this.input.nativeElement, 'keyup')
+    // Apply debounce to the custom filter input element
+    fromEvent(this.input.nativeElement, 'keyup')
       .pipe(
-        map(event => (event.target as HTMLInputElement).value),
-        debounceTime(300), // Wait for 300ms pause in events
-        distinctUntilChanged(), // Only emit if value has changed
-        takeUntil(this.destroy$) // Unsubscribe when component is destroyed
+        map(() => this.input.nativeElement.value),
+        debounceTime(300),
+        distinctUntilChanged(),
+        takeUntil(this.destroy$)
       )
       .subscribe(filterValue => {
         this.applyFilter(filterValue);
@@ -76,70 +88,103 @@ export class MemberComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  applyFilter(filterValue: string) {
-    // This method now takes the debounced value directly
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
+    if (this.ref) {
+        this.ref.close();
     }
   }
 
+  applyFilter(filterValue: string) {
+     // Use the p-table's built-in global filter method
+     this.dtMembers.filterGlobal(filterValue.trim().toLowerCase(), 'contains');
+  }
+
   loadMembers(): void {
+    this.loading = true;
     this.memberService.getAllMembers().subscribe((data) => {
-      this.dataSource.data = data;
+      this.members = data; // Assign to members array
+      this.loading = false;
     });
   }
 
   deleteMember(id: string) {
-    let dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: { message: 'Voulez-vous supprimer ce membre ?' }
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.memberService.deleteMember(id).subscribe(() => {
-          this.loadMembers();
-           // Consider adding success feedback (e.g., snackbar)
-        });
-      }
+    this.confirmationService.confirm({
+        message: 'Voulez-vous vraiment supprimer ce membre ?',
+        header: 'Confirmation de suppression',
+        icon: 'pi pi-exclamation-triangle',
+        acceptLabel: 'Oui, supprimer',
+        rejectLabel: 'Annuler',
+        acceptButtonStyleClass: 'p-button-danger',
+        rejectButtonStyleClass: 'p-button-text',
+        accept: () => {
+            this.memberService.deleteMember(id).subscribe(() => {
+                this.loadMembers();
+                this.messageService.add({severity:'success', summary: 'Succès', detail: 'Membre supprimé'});
+            }, (error) => {
+                 this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Impossible de supprimer le membre'});
+                 console.error("Error deleting member:", error);
+            });
+        },
+        reject: () => {
+             // this.confirmationService.close(); // Close is usually handled automatically
+        }
     });
   }
 
-  // Add viewMember method if needed
   viewMember(id: string) {
-    // Placeholder: Implement logic to view member details
-    // Could open a dialog similar to viewEvent or navigate to a detail page
-    console.log('View member with ID:', id);
-    // Example: Open a details dialog (requires DetailsDialogComponent)
-    // this.memberService.getMember(id).subscribe(member => {
-    //   this.dialog.open(DetailsDialogComponent, {
-    //     width: '500px',
-    //     data: { ...member }
-    //   });
-    // });
+     this.ref = this.dialogService.open(DetailsDialogComponent, {
+            header: `Détails du membre`,
+            width: '600px',
+            contentStyle: {"overflow": "auto"},
+            baseZIndex: 10000,
+            data: { memberId: id } // Pass member ID
+        });
+     // No onClose needed
   }
 
   openMemberDialog(member?: Member) {
-    const dialogRef = this.dialog.open(MemberFormComponent, {
-      width: '500px',
-      data: { member: member } // Pass member data for editing
-    });
+    console.log("Open member dialog (Dialog logic commented out)", member);
+    // const dialogRef = this.dialog.open(MemberFormComponent, {
+    //   width: '500px',
+    //   data: { member: member }
+    // });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.loadMembers();
-         // Consider adding success feedback (e.g., snackbar)
-      }
-    });
+    // dialogRef.afterClosed().subscribe((result: any) => { // Added :any type
+    //   if (result) {
+    //     this.loadMembers();
+    //   }
+    // });
   }
 
   addMember() {
-    this.openMemberDialog(); // Open dialog without data for adding
+    console.log("Add member triggered");
+     this.ref = this.dialogService.open(MemberFormComponent, {
+            header: 'Ajouter un membre',
+            width: '450px',
+            contentStyle: { "overflow": "auto" },
+            baseZIndex: 10000
+        });
+
+     this.ref.onClose.subscribe((result) => {
+          if (result) {
+              this.loadMembers();
+          }
+     });
   }
 
   editMember(member: Member) {
-    this.openMemberDialog(member); // Open dialog with member data for editing
+    console.log("Edit member:", member);
+     this.ref = this.dialogService.open(MemberFormComponent, {
+            header: 'Modifier le membre',
+            width: '450px',
+            contentStyle: { "overflow": "auto" },
+            baseZIndex: 10000,
+            data: { member: member }
+        });
+
+     this.ref.onClose.subscribe((result) => {
+          if (result) {
+              this.loadMembers();
+          }
+     });
   }
 }

@@ -1,36 +1,45 @@
-<h2 mat-dialog-title>{{ isEditMode ? 'Modifier l\'événement' : 'Créer un événement' }}</h2>
-<mat-dialog-content>
-  <form [formGroup]="form">
-    <mat-form-field>
-      <mat-label>Titre</mat-label>
-      <input matInput placeholder="Titre de l'événement" formControlName="titre">
-    </mat-form-field>
+<!-- No h2/mat-dialog-title needed here; set in DialogService config -->
+<!-- No mat-dialog-content wrapper needed -->
+<form [formGroup]="eventForm" (ngSubmit)="onSubmit()" class="p-fluid p-4"> <!-- Add padding -->
+  <!-- Title Field -->
+  <div class="field mb-4">
+    <label for="titre" class="block font-semibold mb-2">Titre</label>
+    <input id="titre" type="text" pInputText placeholder="Titre de l'événement" formControlName="titre" class="w-full">
+    <!-- Basic Error Display -->
+    <small class="p-error block" *ngIf="eventForm.get('titre')?.invalid && eventForm.get('titre')?.touched">
+      Le titre est requis.
+    </small>
+  </div>
 
-    <mat-form-field>
-      <mat-label>Lieu</mat-label>
-      <input matInput placeholder="Lieu de l'événement" formControlName="lieu">
-    </mat-form-field>
+  <!-- Location Field -->
+  <div class="field mb-4">
+    <label for="lieu" class="block font-semibold mb-2">Lieu</label>
+    <input id="lieu" type="text" pInputText placeholder="Lieu de l'événement" formControlName="lieu" class="w-full">
+    <small class="p-error block" *ngIf="eventForm.get('lieu')?.invalid && eventForm.get('lieu')?.touched">
+      Le lieu est requis.
+    </small>
+  </div>
 
-    <mat-form-field>
-      <mat-label>Période de l'événement</mat-label>
-      <mat-date-range-input [rangePicker]="picker">
-        <input matStartDate placeholder="Date de début" formControlName="date_debut">
-        <input matEndDate placeholder="Date de fin" formControlName="date_fin">
-      </mat-date-range-input>
-      <mat-hint>JJ/MM/AAAA – JJ/MM/AAAA</mat-hint>
-      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-date-range-picker #picker></mat-date-range-picker>
+  <!-- Date Fields -->
+  <div class="formgrid grid mb-4">
+      <div class="field col">
+          <label for="date_debut" class="block font-semibold mb-2">Date de début</label>
+          <p-calendar inputId="date_debut" formControlName="date_debut" [showIcon]="true" dateFormat="dd/mm/yy" inputStyleClass="w-full" styleClass="w-full"></p-calendar>
+           <small class="p-error block" *ngIf="eventForm.get('date_debut')?.invalid && eventForm.get('date_debut')?.touched">
+             Date de début requise.
+          </small>
+      </div>
+      <div class="field col">
+          <label for="date_fin" class="block font-semibold mb-2">Date de fin</label>
+          <p-calendar inputId="date_fin" formControlName="date_fin" [showIcon]="true" dateFormat="dd/mm/yy" inputStyleClass="w-full" styleClass="w-full"></p-calendar>
+           <small class="p-error block" *ngIf="eventForm.get('date_fin')?.invalid && eventForm.get('date_fin')?.touched && !eventForm.errors?.['dateRange']">
+             Date de fin requise.
+          </small>
+           <small class="p-error block" *ngIf="eventForm.errors?.['dateRange'] && eventForm.get('date_fin')?.touched">
+             La date de fin doit être postérieure à la date de début.
+          </small>
+      </div>
+  </div>
 
-      <mat-error *ngIf="form.errors?.['dateRange']">
-        La date de fin doit être postérieure à la date de début
-      </mat-error>
-    </mat-form-field>
-  </form>
-</mat-dialog-content>
-
-<mat-dialog-actions align="end">
-  <button mat-button (click)="onCancel()">Annuler</button>
-  <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="!form.valid">
-    {{ isEditMode ? 'Modifier' : 'Créer' }}
-  </button>
-</mat-dialog-actions>
+</form>
+<!-- Buttons are now handled by DialogService configuration or programmatically -->

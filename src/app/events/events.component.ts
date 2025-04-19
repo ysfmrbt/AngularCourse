@@ -1,70 +1,68 @@
 import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy, ElementRef } from '@angular/core';
+import { CommonModule, DatePipe } from '@angular/common';
 import { EventService } from 'src/services/event.service';
 import { Event } from 'src/models/Event';
-import { MatDialog } from '@angular/material/dialog';
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
-import { EventFormComponent } from './event-form/event-form.component';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { DetailsDialogComponent } from '../details-dialog/details-dialog.component';
 import { Subject, fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
+import { ConfirmationService, MessageService, PrimeTemplate } from 'primeng/api';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { EventFormComponent } from './event-form/event-form.component';
+import { DetailsDialogComponent } from '../details-dialog/details-dialog.component';
+
+// PrimeNG Imports
+import { Table, TableModule } from 'primeng/table';
+import { ButtonModule, Button } from 'primeng/button';
+import { InputTextModule, InputText } from 'primeng/inputtext';
+import { RippleModule } from 'primeng/ripple';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
     selector: 'app-events',
     templateUrl: './events.component.html',
     styleUrls: ['./events.component.css'],
-    standalone: false
+    standalone: true,
+    imports: [
+        CommonModule,
+        TableModule,
+        ButtonModule,
+        InputTextModule,
+        ConfirmDialogModule,
+        ToastModule,
+        IconFieldModule,
+        InputIconModule
+    ]
 })
 export class EventsComponent implements OnInit, AfterViewInit, OnDestroy {
-  displayedColumns: string[] = [
-    'id',
-    'titre',
-    'lieu',
-    'date_debut',
-    'date_fin',
-    'action',
-  ];
-  dataSource!: MatTableDataSource<Event>;
+  events: Event[] = [];
+  loading: boolean = true;
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild('input') input!: ElementRef; // Get reference to input element
+  @ViewChild('dt') dt!: Table;
+  @ViewChild('input') input!: ElementRef;
 
-  private destroy$ = new Subject<void>(); // Subject to manage subscription cleanup
+  private destroy$ = new Subject<void>();
+  ref: DynamicDialogRef | undefined;
 
-  constructor(private eventService: EventService, private dialog: MatDialog) {
-    this.dataSource = new MatTableDataSource<Event>([]);
-  }
+  constructor(
+    private eventService: EventService,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService,
+    private dialogService: DialogService
+  ) {}
 
   ngOnInit(): void {
     this.loadEvents();
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-
-    // Custom filter predicate
-    this.dataSource.filterPredicate = (data: Event, filter: string) => {
-      const searchStr = filter.toLowerCase();
-      // Ensure all fields are checked, handling potential undefined/null values if necessary
-      return (
-        data.id?.toString().toLowerCase().includes(searchStr) ||
-        data.titre?.toLowerCase().includes(searchStr) ||
-        data.lieu?.toLowerCase().includes(searchStr)
-        // Add other searchable fields if needed
-      );
-    };
-
-    // Apply debounce to filter input
-    fromEvent<KeyboardEvent>(this.input.nativeElement, 'keyup')
+    fromEvent(this.input.nativeElement, 'keyup')
       .pipe(
-        map(event => (event.target as HTMLInputElement).value),
-        debounceTime(300), // Wait for 300ms pause in events
-        distinctUntilChanged(), // Only emit if value has changed
-        takeUntil(this.destroy$) // Unsubscribe when component is destroyed
+        map(() => this.input.nativeElement.value),
+        debounceTime(300),
+        distinctUntilChanged(),
+        takeUntil(this.destroy$)
       )
       .subscribe(filterValue => {
         this.applyFilter(filterValue);
@@ -74,67 +72,85 @@ export class EventsComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  applyFilter(filterValue: string) {
-    // This method now takes the debounced value directly
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
+    if (this.ref) {
+        this.ref.close();
     }
   }
 
+  applyFilter(filterValue: string) {
+    this.dt.filterGlobal(filterValue.trim().toLowerCase(), 'contains');
+  }
+
   loadEvents(): void {
+    this.loading = true;
     this.eventService.getAllEvents().subscribe((data: Event[]) => {
-      this.dataSource.data = data;
+      this.events = data;
+      this.loading = false;
     });
   }
 
   deleteEvent(id: string) {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: { message: 'Voulez-vous supprimer cet événement ?' },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.eventService.deleteEvent(id).subscribe(() => {
-          this.loadEvents();
-          // Consider adding success feedback (e.g., snackbar)
-        });
-      }
+    this.confirmationService.confirm({
+        message: 'Voulez-vous vraiment supprimer cet événement ?',
+        header: 'Confirmation de suppression',
+        icon: 'pi pi-exclamation-triangle',
+        acceptLabel: 'Oui, supprimer',
+        rejectLabel: 'Annuler',
+        acceptButtonStyleClass: 'p-button-danger',
+        rejectButtonStyleClass: 'p-button-text',
+        accept: () => {
+            this.eventService.deleteEvent(id).subscribe(() => {
+                this.loadEvents();
+                this.messageService.add({severity:'success', summary: 'Succès', detail: 'Événement supprimé'});
+            }, (error) => {
+                 this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Impossible de supprimer l\'événement'});
+                 console.error("Error deleting event:", error);
+            });
+        },
+        reject: () => {
+             // this.confirmationService.close(); // Close is usually handled automatically
+        }
     });
   }
 
   viewEvent(id: string) {
-    this.eventService.getEvent(id).subscribe((event) => {
-      // Format dates for display if needed, or handle in DetailsDialogComponent
-      this.dialog.open(DetailsDialogComponent, {
-        width: '500px',
-        data: { ...event }, // Pass raw event data
-      });
+    this.ref = this.dialogService.open(DetailsDialogComponent, {
+        header: `Détails de l\'événement`,
+        width: '600px',
+        contentStyle: {"overflow": "auto"},
+        baseZIndex: 10000,
+        data: { eventId: id }
     });
   }
 
-  openEventDialog(event?: Event) {
-    const dialogRef = this.dialog.open(EventFormComponent, {
-      width: '500px',
-      data: { event: event }, // Pass event data for editing
+  editEvent(event: Event) {
+    this.ref = this.dialogService.open(EventFormComponent, {
+        header: 'Modifier l\'événement',
+        width: '50%',
+        contentStyle: {"max-height": "500px", "overflow": "auto"},
+        baseZIndex: 10000,
+        data: { event: event }
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.loadEvents();
-         // Consider adding success feedback (e.g., snackbar)
-      }
+    this.ref.onClose.subscribe((result) => {
+        if (result) {
+            this.loadEvents();
+        }
     });
   }
 
   addEvent() {
-    this.openEventDialog(); // Open dialog without data for adding
-  }
+    this.ref = this.dialogService.open(EventFormComponent, {
+        header: 'Ajouter un événement',
+        width: '50%',
+        contentStyle: {"max-height": "500px", "overflow": "auto"},
+        baseZIndex: 10000
+    });
 
-  editEvent(event: Event) {
-    this.openEventDialog(event); // Open dialog with event data for editing
+    this.ref.onClose.subscribe((result) => {
+        if (result) {
+            this.loadEvents();
+        }
+    });
   }
 }
