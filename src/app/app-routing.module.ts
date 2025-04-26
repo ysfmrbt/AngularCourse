@@ -8,6 +8,7 @@ import { ArticlesComponent } from './articles/articles.component';
 import { TemplateComponent } from './template/template.component';
 import { LoginComponent } from './login/login.component';
 import { authGuard } from './auth.guard';
+import { provideRouter } from '@angular/router';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -22,13 +23,13 @@ const routes: Routes = [
       { path: 'events', component: EventsComponent },
       { path: 'tools', component: ToolsComponent },
       { path: 'articles', component: ArticlesComponent },
-    ]
+    ],
   },
-  { path: '**', redirectTo: '/dashboard' }
+  { path: '**', redirectTo: '/dashboard' },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}

@@ -1,41 +1,59 @@
-/* Remove the direct theme import as it's handled by providePrimeNG
-// @import "node_modules/@primeng/themes/aura/theme.css";
+/* Import fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
-/* @import '@angular/material/prebuilt-themes/indigo-pink.css'; */ /* Removed Material theme */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap'); // Re-enable Inter font
-
-/* Remove custom :root variables to rely on PrimeNG theme */
-/*
+/* Common spacing variables */
 :root {
-  --primary-color: #3f51b5;
-  --accent-color: #ff4081;
-  --warn-color: #f44336;
-  --success-color: #4caf50;
-  --background-color: #f8f9fa;
-  --text-primary: rgba(0, 0, 0, 0.87);
-  --text-secondary: rgba(0, 0, 0, 0.54);
-  --divider-color: rgba(0, 0, 0, 0.12);
-  --white: #ffffff;
-  --secondary-color: #eeeeee;
   --spacing-xs: 4px;
   --spacing-sm: 8px;
   --spacing-md: 16px;
   --spacing-lg: 24px;
   --spacing-xl: 32px;
-  --border-radius: 8px;
   --container-max-width: 1200px;
+  --border-radius: 6px;
 }
-*/
 
+/* Base styles */
 html, body {
   height: 100%;
   margin: 0;
-  /* Let PrimeNG theme handle font, background, color */
-  font-family: 'Inter', sans-serif; // Re-enable Inter font override
-  /* background-color: var(--background-color); */
-  /* color: var(--text-primary); */
-  -webkit-font-smoothing: antialiased; /* Common reset */
-  -moz-osx-font-smoothing: grayscale; /* Common reset */
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Light theme specific overrides */
+body.light-theme {
+  --app-background: var(--surface-ground);
+  --app-text: var(--text-color);
+  --card-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.06);
+  background-color: var(--surface-ground);
+  color: var(--text-color);
+}
+
+/* Dark theme specific overrides */
+body.dark-theme {
+  --app-background: var(--surface-ground);
+  --app-text: var(--text-color);
+  --card-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.2);
+  background-color: var(--surface-ground);
+  color: var(--text-color);
+}
+
+/* Global PrimeNG component overrides */
+.p-component {
+  font-family: 'Inter', sans-serif;
+}
+
+.p-card {
+  border-radius: var(--border-radius);
+}
+
+.p-button {
+  border-radius: var(--border-radius);
+}
+
+.p-inputtext {
+  border-radius: var(--border-radius);
 }
 
 * {

@@ -8,11 +8,10 @@
       "id": "d2e7"
     },
     {
-      "id": "32dd",
-      "cin": "11138818",
-      "nom": "Youssef",
-      "type": "Student",
-      "createDate": "Today"
+      "id": "5134",
+      "cin": "12345678",
+      "nom": "Mrabet",
+      "type": "Etudiant"
     }
   ],
   "events": [
@@ -64,6 +63,40 @@
       "date_debut": "2025-03-05T23:00:00.000Z",
       "date_fin": "2025-03-10T23:00:00.000Z",
       "id": "10f5"
+    }
+  ],
+  "Pub": [
+    {
+      "id": "1245",
+      "titre": "Pub1",
+      "type": "Conference",
+      "lien": "https://www.google.com",
+      "date": "2025-03-05T23:00:00.000Z",
+      "sourcePDF": "https://www.google.com"
+    },
+    {
+      "id": "1246",
+      "titre": "Pub2",
+      "type": "Conference",
+      "lien": "https://www.google.com",
+      "date": "2025-03-05T23:00:00.000Z",
+      "sourcePDF": "https://www.google.com"
+    },
+    {
+      "id": "1247",
+      "titre": "Pub3",
+      "type": "Conference",
+      "lien": "https://www.google.com",
+      "date": "2025-03-05T23:00:00.000Z",
+      "sourcePDF": "https://www.google.com"
+    },
+    {
+      "id": "63a7",
+      "titre": "Pub4",
+      "type": "Journal",
+      "lien": "https://google.com",
+      "date": "2025-04-19T23:00:00.000Z",
+      "sourcePDF": ""
     }
   ]
 }

@@ -1,0 +1,37 @@
+.table-container {
+    overflow-x: auto;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-header {
+    background: var(--surface-section);
+    border: 1px solid var(--surface-border);
+    border-width: 1px 1px 0 1px;
+    padding: 1rem;
+    font-weight: 600;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-footer {
+    background: var(--surface-section);
+    border: 1px solid var(--surface-border);
+    border-width: 0 1px 1px 1px;
+    padding: 1rem;
+    font-weight: 600;
+}
+
+:host ::ng-deep .p-datatable .p-paginator-bottom {
+    border-width: 0 1px 1px 1px;
+}
+
+:host ::ng-deep .p-tag {
+    min-width: 80px;
+    text-align: center;
+}
+
+:host ::ng-deep .p-button.p-button-icon-only.p-button-rounded {
+    height: 2.5rem;
+    width: 2.5rem;
+}
+
+.actions-container {
+    margin-bottom: 1rem;
+}

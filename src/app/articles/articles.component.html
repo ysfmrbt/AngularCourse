@@ -1,1 +1,82 @@
-<p>articles works!</p>
+<section class="p-4">
+    <div class="p-mb-4">
+        <h1>Publications scientifiques</h1>
+    </div>
+
+    <div class="actions-container mb-4 flex flex-column sm:flex-row justify-content-between align-items-center gap-2">
+        <p-iconfield iconPosition="left">
+            <p-inputicon class="pi pi-search"></p-inputicon>
+            <input pInputText type="text" #input placeholder="Rechercher..." class="w-full" />
+        </p-iconfield>
+
+        <p-button label="Ajouter une publication" icon="pi pi-plus" (click)="addPublication()"
+            styleClass="w-full sm:w-auto"></p-button>
+    </div>
+
+    <div class="table-container card">
+        <p-table #dt [value]="publications" dataKey="id" [rows]="10" [loading]="loading"
+            [rowsPerPageOptions]="[5, 10, 25, 100]" [paginator]="true" paginatorPosition="bottom"
+            [globalFilterFields]="['id', 'titre', 'type', 'date']" [tableStyle]="{ 'min-width': '75rem' }"
+            styleClass="p-datatable-striped p-datatable-gridlines">
+
+            <ng-template pTemplate="caption">
+                <div class="flex align-items-center justify-content-end">
+                </div>
+            </ng-template>
+
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="id" style="width:8%">ID <p-sortIcon field="id"></p-sortIcon></th>
+                    <th pSortableColumn="titre" style="width:32%">Titre <p-sortIcon field="titre"></p-sortIcon></th>
+                    <th pSortableColumn="type" style="width:15%">Type <p-sortIcon field="type"></p-sortIcon></th>
+                    <th pSortableColumn="date" style="width:15%">Date <p-sortIcon field="date"></p-sortIcon></th>
+                    <th style="width:30%">Actions</th>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-pub>
+                <tr>
+                    <td>{{ pub.id }}</td>
+                    <td>{{ pub.titre }}</td>
+                    <td>
+                        <p-tag [value]="pub.type" [severity]="getTypeColor(pub.type)"></p-tag>
+                    </td>
+                    <td>{{ pub.date ? (pub.date | date: 'dd/MM/yyyy') : '' }}</td>
+                    <td>
+                        <div class="flex gap-2 justify-content-center">
+                            <p-button icon="pi pi-pencil" styleClass="p-button-text p-button-rounded p-button-info"
+                                (click)="editPublication(pub)" pTooltip="Modifier"></p-button>
+                            <p-button icon="pi pi-external-link"
+                                styleClass="p-button-text p-button-rounded p-button-secondary"
+                                (click)="viewPublication(pub.id)" pTooltip="Ouvrir le lien"></p-button>
+                            <p-button icon="pi pi-file-pdf" styleClass="p-button-text p-button-rounded p-button-help"
+                                (click)="viewPDF(pub.id)" pTooltip="Voir le PDF" [disabled]="!pub.sourcePDF"></p-button>
+                            <p-button icon="pi pi-trash" styleClass="p-button-text p-button-rounded p-button-danger"
+                                (click)="deletePublication(pub.id)" pTooltip="Supprimer"></p-button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="5" class="text-center">Aucune publication trouvée.</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</section>
+
+<!-- Publication Form Dialog -->
+<p-dialog [(visible)]="pubDialogVisible" [modal]="true" [style]="{ width: '500px' }" [draggable]="false"
+    [resizable]="false">
+    <ng-template pTemplate="header">
+        <div class="flex align-items-center gap-2">
+            <i class="pi pi-book text-xl"></i>
+            <span class="font-bold">{{ selectedPub ? 'Modifier la publication' : 'Ajouter une publication' }}</span>
+        </div>
+    </ng-template>
+
+    <app-pub-form [pub]="selectedPub" (formSubmit)="onPubDialogClose(true)" (formCancel)="onPubDialogClose(false)">
+    </app-pub-form>
+</p-dialog>

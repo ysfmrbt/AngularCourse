@@ -1,0 +1,101 @@
+<form [formGroup]="pubForm" (ngSubmit)="onSubmit()" class="p-fluid">
+  <div class="field mb-4">
+    <label for="titre" class="block mb-2">Titre</label>
+    <input 
+      id="titre" 
+      type="text" 
+      pInputText 
+      formControlName="titre" 
+      [ngClass]="{'ng-invalid ng-dirty': pubForm.get('titre')?.invalid && pubForm.get('titre')?.touched}"
+    />
+    <small 
+      *ngIf="pubForm.get('titre')?.invalid && pubForm.get('titre')?.touched" 
+      class="p-error"
+    >
+      Le titre est requis
+    </small>
+  </div>
+
+  <div class="field mb-4">
+    <label for="type" class="block mb-2">Type</label>
+    <p-dropdown 
+      id="type" 
+      [options]="pubTypes" 
+      formControlName="type" 
+      placeholder="Sélectionner un type" 
+      [ngClass]="{'ng-invalid ng-dirty': pubForm.get('type')?.invalid && pubForm.get('type')?.touched}"
+    ></p-dropdown>
+    <small 
+      *ngIf="pubForm.get('type')?.invalid && pubForm.get('type')?.touched" 
+      class="p-error"
+    >
+      Le type est requis
+    </small>
+  </div>
+
+  <div class="field mb-4">
+    <label for="lien" class="block mb-2">Lien</label>
+    <input 
+      id="lien" 
+      type="text" 
+      pInputText 
+      formControlName="lien" 
+      [ngClass]="{'ng-invalid ng-dirty': pubForm.get('lien')?.invalid && pubForm.get('lien')?.touched}"
+    />
+    <small 
+      *ngIf="pubForm.get('lien')?.invalid && pubForm.get('lien')?.touched" 
+      class="p-error"
+    >
+      Un lien valide est requis (doit commencer par http:// ou https://)
+    </small>
+  </div>
+
+  <div class="field mb-4">
+    <label for="date" class="block mb-2">Date</label>
+    <p-calendar 
+      id="date" 
+      formControlName="date" 
+      [showIcon]="true" 
+      dateFormat="dd/mm/yy"
+      [ngClass]="{'ng-invalid ng-dirty': pubForm.get('date')?.invalid && pubForm.get('date')?.touched}"
+    ></p-calendar>
+    <small 
+      *ngIf="pubForm.get('date')?.invalid && pubForm.get('date')?.touched" 
+      class="p-error"
+    >
+      La date est requise
+    </small>
+  </div>
+
+  <div class="field mb-4">
+    <label for="sourcePDF" class="block mb-2">Source PDF (optionnel)</label>
+    <input 
+      id="sourcePDF" 
+      type="text" 
+      pInputText 
+      formControlName="sourcePDF" 
+      [ngClass]="{'ng-invalid ng-dirty': pubForm.get('sourcePDF')?.invalid && pubForm.get('sourcePDF')?.touched}"
+    />
+    <small 
+      *ngIf="pubForm.get('sourcePDF')?.invalid && pubForm.get('sourcePDF')?.touched" 
+      class="p-error"
+    >
+      Le lien doit commencer par http:// ou https://
+    </small>
+  </div>
+
+  <div class="flex justify-content-end gap-2 mt-4">
+    <p-button 
+      label="Annuler" 
+      icon="pi pi-times" 
+      (onClick)="onCancel()" 
+      styleClass="p-button-text"
+    ></p-button>
+    <p-button 
+      type="submit" 
+      label="Enregistrer" 
+      icon="pi pi-check" 
+      [disabled]="pubForm.invalid"
+    ></p-button>
+  </div>
+</form>

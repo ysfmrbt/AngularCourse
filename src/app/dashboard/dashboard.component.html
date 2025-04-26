@@ -1,1 +1,170 @@
-<p>dashboard works!</p>
+<div class="dashboard-container">
+    <!-- Loading spinner -->
+    <div *ngIf="loading" class="flex justify-content-center align-items-center" style="min-height: 400px;">
+        <p-progressSpinner styleClass="w-4rem h-4rem" strokeWidth="4" fill="var(--surface-ground)"
+            animationDuration=".5s"></p-progressSpinner>
+    </div>
+
+    <div *ngIf="!loading" class="grid">
+        <!-- Members Card -->
+        <div class="col-12 md:col-6 lg:col-3">
+            <p-card styleClass="mb-3 dashboard-card" (click)="navigateTo('/members')">
+                <ng-template pTemplate="header">
+                    <div class="flex justify-content-between align-items-center p-3 bg-primary">
+                        <span class="text-white font-bold">Members</span>
+                        <i class="pi pi-users text-white text-xl"></i>
+                    </div>
+                </ng-template>
+                <div class="text-center">
+                    <span class="text-5xl font-bold">{{ memberCount }}</span>
+                    <p>Total Members</p>
+                </div>
+            </p-card>
+        </div>
+
+        <!-- Events Card -->
+        <div class="col-12 md:col-6 lg:col-3">
+            <p-card styleClass="mb-3 dashboard-card" (click)="navigateTo('/events')">
+                <ng-template pTemplate="header">
+                    <div class="flex justify-content-between align-items-center p-3 bg-success">
+                        <span class="text-white font-bold">Events</span>
+                        <i class="pi pi-calendar text-white text-xl"></i>
+                    </div>
+                </ng-template>
+                <div class="text-center">
+                    <span class="text-5xl font-bold">{{ upcomingEventsCount }}</span>
+                    <p>Upcoming Events</p>
+                </div>
+            </p-card>
+        </div>
+
+        <!-- Articles Card -->
+        <div class="col-12 md:col-6 lg:col-3">
+            <p-card styleClass="mb-3 dashboard-card" (click)="navigateTo('/articles')">
+                <ng-template pTemplate="header">
+                    <div class="flex justify-content-between align-items-center p-3 bg-warning">
+                        <span class="text-white font-bold">Articles</span>
+                        <i class="pi pi-book text-white text-xl"></i>
+                    </div>
+                </ng-template>
+                <div class="text-center">
+                    <span class="text-5xl font-bold">{{ publicationsCount }}</span>
+                    <p>Published Articles</p>
+                </div>
+            </p-card>
+        </div>
+
+        <!-- Tools Card (static for now) -->
+        <div class="col-12 md:col-6 lg:col-3">
+            <p-card styleClass="mb-3 dashboard-card">
+                <ng-template pTemplate="header">
+                    <div class="flex justify-content-between align-items-center p-3 bg-help">
+                        <span class="text-white font-bold">Tools</span>
+                        <i class="pi pi-wrench text-white text-xl"></i>
+                    </div>
+                </ng-template>
+                <div class="text-center">
+                    <span class="text-5xl font-bold">3</span>
+                    <p>Available Tools</p>
+                </div>
+            </p-card>
+        </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div *ngIf="!loading" class="grid mt-3">
+        <!-- Monthly Activity Chart -->
+        <div class="col-12">
+            <p-card header="Monthly Activity Overview" styleClass="mb-3">
+                <p-chart type="line" [data]="monthlyActivityChart" [options]="chartOptions" height="300px"></p-chart>
+            </p-card>
+        </div>
+
+        <!-- Member Type Distribution Chart -->
+        <div class="col-12 md:col-4">
+            <p-card header="Member Distribution" styleClass="mb-3">
+                <p-chart type="doughnut" [data]="memberTypeChart" [options]="chartOptions" height="300px"></p-chart>
+            </p-card>
+        </div>
+
+        <!-- Event Timeline Chart -->
+        <div class="col-12 md:col-4">
+            <p-card header="Upcoming Events (Days Until)" styleClass="mb-3">
+                <p-chart type="bar" [data]="eventTimelineChart" [options]="chartOptions" height="300px"></p-chart>
+            </p-card>
+        </div>
+
+        <!-- Publication Type Chart -->
+        <div class="col-12 md:col-4">
+            <p-card header="Publications by Type" styleClass="mb-3">
+                <p-chart type="pie" [data]="publicationTypeChart" [options]="chartOptions" height="300px"></p-chart>
+            </p-card>
+        </div>
+    </div>
+
+    <div *ngIf="!loading" class="grid mt-3">
+        <!-- Recent Activities Timeline -->
+        <div class="col-12 lg:col-8">
+            <p-card header="Recent Activities" styleClass="h-full">
+                <div *ngIf="activities.length === 0" class="p-4 text-center">
+                    <i class="pi pi-info-circle text-3xl text-color-secondary mb-3"></i>
+                    <p>No recent activities to display.</p>
+                </div>
+
+                <p-timeline *ngIf="activities.length > 0" [value]="activities" align="alternate" styleClass="mt-3">
+                    <ng-template pTemplate="content" let-activity>
+                        <div class="flex flex-column p-2">
+                            <span class="font-bold mb-1">{{activity.title}}</span>
+                            <small class="text-color-secondary">{{activity.date}}</small>
+                            <p class="mt-2 mb-0">{{activity.description}}</p>
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="opposite" let-activity>
+                        <div
+                            class="flex align-items-center justify-content-center bg-primary border-round p-2 shadow-1 mb-3">
+                            <i [class]="activity.icon + ' text-white'"></i>
+                        </div>
+                    </ng-template>
+                </p-timeline>
+            </p-card>
+        </div>
+
+        <!-- Quick Links Card -->
+        <div class="col-12 lg:col-4">
+            <p-card header="Quick Links" styleClass="h-full">
+                <div class="flex flex-column gap-3">
+                    <a pRipple routerLink="/members" [queryParams]="{action: 'add'}"
+                        class="p-3 border-round hover:surface-200 transition-duration-150 cursor-pointer no-underline text-color flex align-items-center">
+                        <i class="pi pi-user-plus mr-2 text-primary"></i>
+                        <span>Add New Member</span>
+                    </a>
+                    <a pRipple routerLink="/events" [queryParams]="{action: 'add'}"
+                        class="p-3 border-round hover:surface-200 transition-duration-150 cursor-pointer no-underline text-color flex align-items-center">
+                        <i class="pi pi-calendar-plus mr-2 text-primary"></i>
+                        <span>Create Event</span>
+                    </a>
+                    <a pRipple routerLink="/articles" [queryParams]="{action: 'add'}"
+                        class="p-3 border-round hover:surface-200 transition-duration-150 cursor-pointer no-underline text-color flex align-items-center">
+                        <i class="pi pi-file-edit mr-2 text-primary"></i>
+                        <span>Write Article</span>
+                    </a>
+                    <a pRipple routerLink="/members"
+                        class="p-3 border-round hover:surface-200 transition-duration-150 cursor-pointer no-underline text-color flex align-items-center">
+                        <i class="pi pi-users mr-2 text-primary"></i>
+                        <span>View All Members</span>
+                    </a>
+                    <a pRipple routerLink="/events"
+                        class="p-3 border-round hover:surface-200 transition-duration-150 cursor-pointer no-underline text-color flex align-items-center">
+                        <i class="pi pi-calendar mr-2 text-primary"></i>
+                        <span>View All Events</span>
+                    </a>
+                    <a pRipple routerLink="/articles"
+                        class="p-3 border-round hover:surface-200 transition-duration-150 cursor-pointer no-underline text-color flex align-items-center">
+                        <i class="pi pi-book mr-2 text-primary"></i>
+                        <span>View All Articles</span>
+                    </a>
+                </div>
+            </p-card>
+        </div>
+    </div>
+</div>

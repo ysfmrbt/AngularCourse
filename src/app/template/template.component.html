@@ -5,50 +5,35 @@
     <ng-template pTemplate="content">
       <div class="flex flex-column gap-2">
         <!-- Reduced padding on links from p-3 to p-2 -->
-        <a pRipple
-           routerLink="/dashboard"
-           routerLinkActive="active-route-class"
-           [routerLinkActiveOptions]="{exact: true}"
-           (click)="sidebarVisible = false"
-           class="p-2 border-round hover:surface-100 transition-duration-150 cursor-pointer no-underline text-700">
+        <a pRipple routerLink="/dashboard" routerLinkActive="active-route-class"
+          [routerLinkActiveOptions]="{exact: true}" (click)="sidebarVisible = false"
+          class="p-2 border-round hover:surface-100 transition-duration-150 cursor-pointer no-underline text-700">
           <i class="pi pi-home mr-2"></i>
           <span>Dashboard</span>
         </a>
-        <a pRipple
-           routerLink="/members"
-           routerLinkActive="active-route-class"
-           [routerLinkActiveOptions]="{exact: true}"
-           (click)="sidebarVisible = false"
-           class="p-2 border-round hover:surface-100 transition-duration-150 cursor-pointer no-underline text-700">
-           <i class="pi pi-users mr-2"></i>
+        <a pRipple routerLink="/members" routerLinkActive="active-route-class" [routerLinkActiveOptions]="{exact: true}"
+          (click)="sidebarVisible = false"
+          class="p-2 border-round hover:surface-100 transition-duration-150 cursor-pointer no-underline text-700">
+          <i class="pi pi-users mr-2"></i>
           <span>Members</span>
         </a>
-        <a pRipple
-           routerLink="/tools"
-           routerLinkActive="active-route-class"
-           [routerLinkActiveOptions]="{exact: true}"
-           (click)="sidebarVisible = false"
-           class="p-2 border-round hover:surface-100 transition-duration-150 cursor-pointer no-underline text-700">
+        <a pRipple routerLink="/tools" routerLinkActive="active-route-class" [routerLinkActiveOptions]="{exact: true}"
+          (click)="sidebarVisible = false"
+          class="p-2 border-round hover:surface-100 transition-duration-150 cursor-pointer no-underline text-700">
           <i class="pi pi-wrench mr-2"></i>
           <span>Tools</span>
         </a>
-        <a pRipple
-           routerLink="/articles"
-           routerLinkActive="active-route-class"
-           [routerLinkActiveOptions]="{exact: true}"
-           (click)="sidebarVisible = false"
-           class="p-2 border-round hover:surface-100 transition-duration-150 cursor-pointer no-underline text-700">
-           <i class="pi pi-book mr-2"></i>
-           <span>Articles</span>
+        <a pRipple routerLink="/articles" routerLinkActive="active-route-class"
+          [routerLinkActiveOptions]="{exact: true}" (click)="sidebarVisible = false"
+          class="p-2 border-round hover:surface-100 transition-duration-150 cursor-pointer no-underline text-700">
+          <i class="pi pi-book mr-2"></i>
+          <span>Articles</span>
         </a>
-        <a pRipple
-           routerLink="/events"
-           routerLinkActive="active-route-class"
-           [routerLinkActiveOptions]="{exact: true}"
-           (click)="sidebarVisible = false"
-           class="p-2 border-round hover:surface-100 transition-duration-150 cursor-pointer no-underline text-700">
-           <i class="pi pi-calendar mr-2"></i>
-           <span>Events</span>
+        <a pRipple routerLink="/events" routerLinkActive="active-route-class" [routerLinkActiveOptions]="{exact: true}"
+          (click)="sidebarVisible = false"
+          class="p-2 border-round hover:surface-100 transition-duration-150 cursor-pointer no-underline text-700">
+          <i class="pi pi-calendar mr-2"></i>
+          <span>Events</span>
         </a>
         <!-- Add more links as needed with routerLinkActive -->
       </div>
@@ -59,24 +44,27 @@
   <div class="layout-main-container">
     <!-- PrimeNG Toolbar -->
     <p-toolbar styleClass="topbar">
-        <ng-template pTemplate="start">
-            <p-button type="button" icon="pi pi-bars" (click)="sidebarVisible = true" [text]="true" [rounded]="true"></p-button>
-             <span class="font-semibold text-primary text-lg ml-2">Lab</span>
-        </ng-template>
+      <ng-template pTemplate="start">
+        <p-button type="button" icon="pi pi-bars" (click)="sidebarVisible = true" [text]="true"
+          [rounded]="true"></p-button>
+        <span class="font-semibold text-primary text-lg ml-2">Lab</span>
+      </ng-template>
 
-        <ng-template pTemplate="end">
-            <p-button
-              *ngIf="loggedInUser"
-              type="button"
-              (click)="userMenu.toggle($event)"
-              icon="pi pi-user"
-              styleClass="user-profile-button"
-              [text]="true">
-                <span class="username mx-2" [ngClass]="{'hidden': !showUsername}">{{ loggedInUser }}</span>
-                <i class="pi pi-angle-down"></i>
-            </p-button>
-            <p-menu #userMenu [model]="userMenuItems" [popup]="true"></p-menu>
-        </ng-template>
+      <ng-template pTemplate="end">
+        <!-- Theme Toggle Button -->
+        <button (click)="toggleTheme()" class="p-button p-button-outlined p-button-rounded mr-2">
+          <i [class]="(currentTheme() === 'dark') ? 'pi pi-sun' : 'pi pi-moon'"></i>
+          Toggle Theme
+        </button>
+
+        <!-- User Menu Button -->
+        <p-button *ngIf="loggedInUser" type="button" (click)="userMenu.toggle($event)" icon="pi pi-user"
+          styleClass="user-profile-button" [text]="true">
+          <span class="username mx-2" [ngClass]="{'hidden': !showUsername}">{{ loggedInUser }}</span>
+          <i class="pi pi-angle-down"></i>
+        </p-button>
+        <p-menu #userMenu [model]="userMenuItems" [popup]="true"></p-menu>
+      </ng-template>
     </p-toolbar>
 
     <!-- Content Outlet -->

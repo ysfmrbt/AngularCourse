@@ -7,25 +7,35 @@
 
 main {
   flex: 1;
-  padding: 20px;
-  background-color: #f8f9fa;
+  padding: var(--spacing-md);
+  background-color: var(--app-background, var(--surface-ground));
 }
 
 .content-wrapper {
-  max-width: 1200px;
+  max-width: var(--container-max-width);
   margin: 0 auto;
-  background-color: white;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  background-color: var(--surface-card);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
 }
 
-@media (max-width: 600px) {
+/* Improved spacing for cards and panels */
+:host ::ng-deep .p-card {
+  margin-bottom: var(--spacing-md);
+}
+
+:host ::ng-deep .p-panel {
+  margin-bottom: var(--spacing-md);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
   main {
-    padding: 10px;
+    padding: var(--spacing-sm);
   }
 
   .content-wrapper {
-    padding: 15px;
+    padding: var(--spacing-md);
   }
 }

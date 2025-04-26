@@ -1,37 +1,45 @@
-<h2 mat-dialog-title>{{ isEditMode ? 'Modifier le membre' : 'Ajouter un membre' }}</h2>
-<form [formGroup]="memberForm" (ngSubmit)="onSubmit()" class="p-fluid p-4">
+<form [formGroup]="memberForm" (ngSubmit)="onSubmit()" class="p-fluid">
   <!-- CIN Field -->
   <div class="field mb-4">
-    <label for="cin" class="block font-semibold mb-2">CIN</label>
-    <input id="cin" type="text" pInputText placeholder="CIN" formControlName="cin" class="w-full">
-    <small class="p-error block" *ngIf="memberForm.get('cin')?.invalid && memberForm.get('cin')?.touched">
+    <label for="cin" class="block mb-2">CIN</label>
+    <input id="cin" type="text" pInputText placeholder="CIN" formControlName="cin"
+      [ngClass]="{'ng-invalid ng-dirty': memberForm.get('cin')?.invalid && memberForm.get('cin')?.touched}" />
+    <small *ngIf="memberForm.get('cin')?.invalid && memberForm.get('cin')?.touched" class="p-error">
       CIN est requis (e.g., 8 caractères).
     </small>
   </div>
 
   <!-- Name Field -->
   <div class="field mb-4">
-    <label for="nom" class="block font-semibold mb-2">Nom</label>
-    <input id="nom" type="text" pInputText placeholder="Nom" formControlName="nom" class="w-full">
-    <small class="p-error block" *ngIf="memberForm.get('nom')?.invalid && memberForm.get('nom')?.touched">
+    <label for="nom" class="block mb-2">Nom</label>
+    <input id="nom" type="text" pInputText placeholder="Nom" formControlName="nom"
+      [ngClass]="{'ng-invalid ng-dirty': memberForm.get('nom')?.invalid && memberForm.get('nom')?.touched}" />
+    <small *ngIf="memberForm.get('nom')?.invalid && memberForm.get('nom')?.touched" class="p-error">
       Nom est requis.
     </small>
   </div>
 
   <!-- Type Field -->
   <div class="field mb-4">
-    <label for="type" class="block font-semibold mb-2">Type</label>
-    <input id="type" type="text" pInputText placeholder="Type (e.g., Enseignant, Etudiant)" formControlName="type" class="w-full">
-     <small class="p-error block" *ngIf="memberForm.get('type')?.invalid && memberForm.get('type')?.touched">
+    <label for="type" class="block mb-2">Type</label>
+    <p-dropdown id="type" [options]="memberTypes" formControlName="type" placeholder="Sélectionner un type"
+      [ngClass]="{'ng-invalid ng-dirty': memberForm.get('type')?.invalid && memberForm.get('type')?.touched}"
+      styleClass="w-full">
+    </p-dropdown>
+    <small *ngIf="memberForm.get('type')?.invalid && memberForm.get('type')?.touched" class="p-error">
       Type est requis.
     </small>
   </div>
 
   <!-- Create Date Field (Display Only) -->
-   <div class="field mb-4" *ngIf="isEditMode && memberForm.get('createDate')?.value">
-    <label for="createDate" class="block font-semibold mb-2">Date de création</label>
-    <input id="createDate" type="text" pInputText formControlName="createDate" class="w-full" [readonly]="true">
+  <div class="field mb-4" *ngIf="isEditMode && memberForm.get('createDate')?.value">
+    <label for="createDate" class="block mb-2">Date de création</label>
+    <input id="createDate" type="text" pInputText formControlName="createDate" [readonly]="true" class="w-full" />
   </div>
 
+  <div class="flex justify-content-end gap-2 mt-4">
+    <p-button type="button" label="Annuler" icon="pi pi-times" (onClick)="onCancel()"
+      styleClass="p-button-text"></p-button>
+    <p-button type="submit" label="Enregistrer" icon="pi pi-check" [disabled]="memberForm.invalid"></p-button>
+  </div>
 </form>
-<!-- Buttons handled by DialogService -->

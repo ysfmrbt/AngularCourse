@@ -1,88 +1,77 @@
-/* Remove most Material-specific styles, rely on PrimeNG theme + PrimeFlex */
-
+/* Base layout styles */
 .layout-wrapper {
   display: flex;
   min-height: 100vh;
 }
 
-/* Customizations for sidebar/toolbar if needed */
-/* Removed default sidebar padding since we use PrimeFlex within the template */
+/* Sidebar customizations */
 :host ::ng-deep .p-sidebar .p-sidebar-content {
- padding: 0;
+  padding: 0;
 }
 
-/* Removed unused styles for .layout-menu */
-/*
-.layout-menu a {
-  text-decoration: none;
+:host ::ng-deep .p-sidebar {
+  box-shadow: var(--card-shadow);
 }
 
-.layout-menu .nav-icon {
-  margin-right: var(--spacing-md); 
-  font-size: 1.2rem; 
-}
-*/
-
-/* Add style for the new active route class */
+/* Active route styling */
 .active-route-class {
-  background-color: var(--surface-100); /* Use PrimeNG theme variable */
-  color: var(--primary-color) !important; /* Ensure text color overrides default link color */
-  font-weight: 600; /* PrimeNG uses 600 for semibold */
+  background-color: var(--surface-100);
+  color: var(--primary-color) !important;
+  font-weight: 600;
+  border-radius: var(--border-radius);
 }
 
-/* Ensure icon within the active link also gets the primary color */
 .active-route-class i {
   color: var(--primary-color) !important;
 }
 
-/* Removed unused styles for .active-list-item */
-/*
-.active-list-item {
-  background-color: var(--surface-100); 
-  color: var(--primary-color);
-  font-weight: 600; 
-}
-
-.active-list-item .nav-icon {
-  color: var(--primary-color);
-}
-*/
-
+/* Main layout container */
 .layout-main-container {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
 }
 
+/* Topbar styling */
 .topbar {
   position: sticky;
   top: 0;
-  z-index: 1000; /* Ensure toolbar stays on top */
-  background-color: var(--surface-card); /* Use PrimeNG theme variable */
+  z-index: 1000;
+  background-color: var(--surface-card);
   border-bottom: 1px solid var(--surface-border);
-  padding: 0.5rem 1rem; /* Adjust padding */
+  padding: var(--spacing-sm) var(--spacing-md);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Content area */
 .content {
   flex-grow: 1;
-  /* padding removed, using p-4 in template */
-  overflow-y: auto; /* Keep scrolling for content */
-  background-color: var(--surface-ground); /* Use PrimeNG theme variable */
+  overflow-y: auto;
+  background-color: var(--surface-ground);
+  padding: var(--spacing-md);
 }
 
-/* Adjust user profile button alignment if needed */
-/* PrimeFlex's justify-content-end on the toolbar group usually handles this */
+/* Theme toggle button customization */
+:host ::ng-deep .theme-toggle-button .p-button-icon {
+  font-size: 1.2rem;
+}
 
-/* Responsive adjustments (Leverage PrimeFlex classes in template where possible) */
+/* User profile button spacing */
+:host ::ng-deep .user-profile-button {
+  margin-left: var(--spacing-sm);
+}
+
+/* Responsive adjustments */
 .username.hidden {
   display: none;
 }
 
-/* Media query fallback if PrimeFlex isn't sufficient */
-/*
-@media (max-width: 600px) {
-  .username {
-    display: none;
+@media (max-width: 768px) {
+  .topbar {
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+
+  .content {
+    padding: var(--spacing-sm);
   }
 }
-*/

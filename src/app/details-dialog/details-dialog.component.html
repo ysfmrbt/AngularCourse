@@ -1,71 +1,71 @@
 <div class="p-4">
-  <div *ngIf="isLoading" class="text-center p-4">
-    <p-progressSpinner></p-progressSpinner>
-  </div>
-  <div *ngIf="errorLoading && !isLoading" class="text-center p-4 text-red-500">
-    Erreur lors du chargement des détails.
-  </div>
-
-  <div *ngIf="!isLoading && !errorLoading && details">
-    <div class="mb-4">
-        <div class="text-sm text-color-secondary mb-1">ID: {{ details.id }}</div>
-        <h1 *ngIf="isEvent(details)" class="text-xl font-semibold m-0">{{ details.titre }}</h1>
-        <h1 *ngIf="!isEvent(details)" class="text-xl font-semibold m-0">{{ details.nom }}</h1>
+    <div *ngIf="isLoading" class="text-center p-4">
+        <p-progressSpinner></p-progressSpinner>
+    </div>
+    <div *ngIf="errorLoading && !isLoading" class="text-center p-4 text-red-500">
+        Erreur lors du chargement des détails.
     </div>
 
-    <div class="grid">
-        <ng-container *ngIf="isEvent(details)">
-            <div class="col-12 md:col-6 flex align-items-center gap-2 mb-3">
-                <i class="pi pi-map-marker text-xl text-primary"></i>
-                <div>
-                    <label class="block text-sm text-color-secondary mb-1">Lieu</label>
-                    <span class="block font-medium">{{ details.lieu }}</span>
-                </div>
-            </div>
-            <div class="col-12 md:col-6 flex align-items-center gap-2 mb-3">
-                <i class="pi pi-calendar text-xl text-primary"></i>
-                <div>
-                    <label class="block text-sm text-color-secondary mb-1">Date de début</label>
-                    <span class="block font-medium">{{ details.date_debut | date:'dd/MM/yyyy' }}</span>
-                </div>
-            </div>
-             <div class="col-12 md:col-6 flex align-items-center gap-2 mb-3">
-                <i class="pi pi-calendar-times text-xl text-primary"></i>
-                <div>
-                    <label class="block text-sm text-color-secondary mb-1">Date de fin</label>
-                    <span class="block font-medium">{{ details.date_fin | date:'dd/MM/yyyy' }}</span>
-                </div>
-            </div>
-        </ng-container>
+    <div *ngIf="!isLoading && !errorLoading && details">
+        <div class="mb-4">
+            <div class="text-sm text-color-secondary mb-1">ID: {{ details.id }}</div>
+            <h1 *ngIf="isEvent(details)" class="text-xl font-semibold m-0">{{ details.titre }}</h1>
+            <h1 *ngIf="!isEvent(details)" class="text-xl font-semibold m-0">{{ details.nom }}</h1>
+        </div>
 
-         <ng-container *ngIf="!isEvent(details)">
-            <div class="col-12 md:col-6 flex align-items-center gap-2 mb-3">
-                <i class="pi pi-id-card text-xl text-primary"></i>
-                <div>
-                    <label class="block text-sm text-color-secondary mb-1">CIN</label>
-                    <span class="block font-medium">{{ details.cin }}</span>
+        <div class="grid">
+            <ng-container *ngIf="isEvent(details)">
+                <div class="col-12 md:col-6 flex align-items-center gap-2 mb-3">
+                    <i class="pi pi-map-marker text-xl text-primary"></i>
+                    <div>
+                        <label class="block text-sm text-color-secondary mb-1">Lieu</label>
+                        <span class="block font-medium">{{ details.lieu }}</span>
+                    </div>
                 </div>
-            </div>
-             <div class="col-12 md:col-6 flex align-items-center gap-2 mb-3">
-                <i class="pi pi-tag text-xl text-primary"></i>
-                <div>
-                    <label class="block text-sm text-color-secondary mb-1">Type</label>
-                    <span class="block font-medium">{{ details.type }}</span>
+                <div class="col-12 md:col-6 flex align-items-center gap-2 mb-3">
+                    <i class="pi pi-calendar text-xl text-primary"></i>
+                    <div>
+                        <label class="block text-sm text-color-secondary mb-1">Date de début</label>
+                        <span class="block font-medium">{{ details.date_debut | date:'dd/MM/yyyy' }}</span>
+                    </div>
                 </div>
-            </div>
-            <div class="col-12 md:col-6 flex align-items-center gap-2 mb-3">
-                <i class="pi pi-calendar-plus text-xl text-primary"></i>
-                <div>
-                    <label class="block text-sm text-color-secondary mb-1">Date de création</label>
-                    <span class="block font-medium">{{ details.createDate | date:'dd/MM/yyyy' }}</span>
+                <div class="col-12 md:col-6 flex align-items-center gap-2 mb-3">
+                    <i class="pi pi-calendar-times text-xl text-primary"></i>
+                    <div>
+                        <label class="block text-sm text-color-secondary mb-1">Date de fin</label>
+                        <span class="block font-medium">{{ details.date_fin | date:'dd/MM/yyyy' }}</span>
+                    </div>
                 </div>
-            </div>
-        </ng-container>
+            </ng-container>
 
+            <ng-container *ngIf="!isEvent(details)">
+                <div class="col-12 md:col-6 flex align-items-center gap-2 mb-3">
+                    <i class="pi pi-id-card text-xl text-primary"></i>
+                    <div>
+                        <label class="block text-sm text-color-secondary mb-1">CIN</label>
+                        <span class="block font-medium">{{ details.cin }}</span>
+                    </div>
+                </div>
+                <div class="col-12 md:col-6 flex align-items-center gap-2 mb-3">
+                    <i class="pi pi-tag text-xl text-primary"></i>
+                    <div>
+                        <label class="block text-sm text-color-secondary mb-1">Type</label>
+                        <span class="block font-medium">{{ details.type }}</span>
+                    </div>
+                </div>
+                <div class="col-12 md:col-6 flex align-items-center gap-2 mb-3">
+                    <i class="pi pi-calendar-plus text-xl text-primary"></i>
+                    <div>
+                        <label class="block text-sm text-color-secondary mb-1">Date de création</label>
+                        <span class="block font-medium">{{ details.createDate | date:'dd/MM/yyyy' }}</span>
+                    </div>
+                </div>
+            </ng-container>
+
+        </div>
+
+        <div class="flex justify-content-end mt-4">
+            <p-button label="Fermer" icon="pi pi-times" (click)="handleClose()" styleClass="p-button-text"></p-button>
+        </div>
     </div>
-  </div>
 </div>
-
-
-
-

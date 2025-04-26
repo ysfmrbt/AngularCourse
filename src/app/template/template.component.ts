@@ -1,51 +1,42 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-// Removed CommonModule and Router imports as they are likely handled by AppModule if component is not standalone
-// import { CommonModule } from '@angular/common'; 
-// import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { SidebarModule, Sidebar } from 'primeng/sidebar';
-import { ButtonModule, Button } from 'primeng/button';
-import { ToolbarModule, Toolbar } from 'primeng/toolbar';
-import { MenuModule, Menu } from 'primeng/menu';
-import { MenuItem, PrimeTemplate } from 'primeng/api';
-import { RippleModule } from 'primeng/ripple';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { NgClass, NgIf } from '@angular/common';
-import { ConfirmDialog } from 'primeng/confirmdialog';
-import { Toast } from 'primeng/toast'; // For link ripple effect
+
+// PrimeNG Modules
+import { SidebarModule } from 'primeng/sidebar';
+import { ButtonModule } from 'primeng/button';
+import { ToolbarModule } from 'primeng/toolbar';
+import { MenuModule } from 'primeng/menu';
+import { MenuItem } from 'primeng/api';
+import { RippleModule } from 'primeng/ripple';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ToastModule } from 'primeng/toast';
+import { TooltipModule } from 'primeng/tooltip';
+
+// Services
 import { AuthService } from 'src/services/auth.service';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { ThemeService } from '../services/theme.service';
 
 @Component({
-    selector: 'app-template', // Kept as false based on v19 migration
-    standalone: true,
-    // imports: [ // Only needed if component becomes standalone
-    //   CommonModule,
-    //   RouterOutlet,
-    //   RouterLink,
-    //   RouterLinkActive,
-    //   SidebarModule,
-    //   ButtonModule,
-    //   ToolbarModule,
-    //   MenuModule,
-    //   RippleModule
-    // ],
-    templateUrl: './template.component.html',
-    styleUrls: ['./template.component.css'],
-    imports: [
-        Sidebar,
-        PrimeTemplate,
-        RouterLink,
-        RouterLinkActive,
-        Toolbar,
-        Button,
-        NgClass,
-        NgIf,
-        Menu,
-        RouterOutlet,
-        ConfirmDialog,
-        Toast,
-    ],
+  selector: 'app-template',
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    RouterLink,
+    RouterLinkActive,
+    SidebarModule,
+    ButtonModule,
+    ToolbarModule,
+    MenuModule,
+    RippleModule,
+    ConfirmDialogModule,
+    ToastModule,
+    TooltipModule,
+  ],
+  templateUrl: './template.component.html',
+  styleUrls: ['./template.component.css'],
 })
 export class TemplateComponent implements OnInit, OnDestroy {
   sidebarVisible: boolean = false;
@@ -54,13 +45,15 @@ export class TemplateComponent implements OnInit, OnDestroy {
   showUsername: boolean = true; // Basic flag for responsiveness demo
   private userSubscription: Subscription | null = null;
 
-  constructor(
-    public authService: AuthService,
-    private router: Router,
-  ) {}
+  // Inject theme service
+  private themeService = inject(ThemeService);
+  // Expose the theme to the template
+  currentTheme = this.themeService.currentTheme$;
+
+  constructor(public authService: AuthService) {}
 
   ngOnInit(): void {
-    this.userSubscription = this.authService.loggedInUser$.subscribe(user => {
+    this.userSubscription = this.authService.loggedInUser$.subscribe((user) => {
       this.loggedInUser = user;
       this.updateUserMenu();
     });
@@ -73,23 +66,32 @@ export class TemplateComponent implements OnInit, OnDestroy {
     this.userSubscription?.unsubscribe();
   }
 
+  toggleTheme(): void {
+    console.log('Template: toggle theme called');
+    this.themeService.toggleTheme();
+  }
+
   checkWindowSize() {
     this.showUsername = window.innerWidth > 600;
   }
 
   updateUserMenu(): void {
     if (this.loggedInUser) {
-        this.userMenuItems = [
-            {
-                label: `Signed in as ${this.loggedInUser}`,
-                disabled: true,
-                styleClass: 'font-semibold'
-            },
-            { separator: true },
-            { label: 'Logout', icon: 'pi pi-sign-out', command: () => this.logout() }
-        ];
+      this.userMenuItems = [
+        {
+          label: `Signed in as ${this.loggedInUser}`,
+          disabled: true,
+          styleClass: 'font-semibold',
+        },
+        { separator: true },
+        {
+          label: 'Logout',
+          icon: 'pi pi-sign-out',
+          command: () => this.logout(),
+        },
+      ];
     } else {
-         this.userMenuItems = [];
+      this.userMenuItems = [];
     }
   }
 
@@ -97,10 +99,10 @@ export class TemplateComponent implements OnInit, OnDestroy {
     this.authService.logout().subscribe({
       // Optional: Add completion logic here if needed after navigation
       // next: () => console.log('Logout observable completed'),
-      error: (err) => console.error('Logout subscription error (though navigation likely happened):', err)
+      error: (err) => console.error('Logout subscription error:', err),
     });
   }
 
-   // Method previously used by mat-sidenav toggle
-   // drawer.toggle() is now replaced by sidebarVisible = !sidebarVisible in the template
+  // Method previously used by mat-sidenav toggle
+  // drawer.toggle() is now replaced by sidebarVisible = !sidebarVisible in the template
 }
