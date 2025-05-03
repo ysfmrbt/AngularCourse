@@ -4,12 +4,11 @@
   "scripts": {
     "ng": "ng",
     "dev": "concurrently \"ng serve\" \"npm run json-server\"",
-    "start": "npm run copy-themes && ng serve",
-    "build": "npm run copy-themes && ng build",
+    "start": "ng serve",
+    "build": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "json-server": "json-server --watch src/assets/db.json --port 3000",
-    "copy-themes": "node copy-themes.js"
+    "json-server": "json-server --watch src/assets/db.json --port 3000"
   },
   "private": true,
   "dependencies": {
