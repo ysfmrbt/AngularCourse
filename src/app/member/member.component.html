@@ -52,10 +52,10 @@
           <td>{{ member.createDate ? (member.createDate | date: 'dd/MM/yyyy') : '' }}</td>
           <td>
             <div class="flex gap-2 justify-content-center">
+              <p-button icon="pi pi-eye" styleClass="p-button-text p-button-rounded p-button-secondary"
+                (click)="viewMemberDetails(member.id)" pTooltip="View Details"></p-button>
               <p-button icon="pi pi-pencil" styleClass="p-button-text p-button-rounded p-button-info"
                 (click)="editMember(member)" pTooltip="Modifier"></p-button>
-              <p-button icon="pi pi-eye" styleClass="p-button-text p-button-rounded p-button-secondary"
-                (click)="viewMember(member.id)" pTooltip="Voir les détails"></p-button>
               <p-button icon="pi pi-trash" styleClass="p-button-text p-button-rounded p-button-danger"
                 (click)="deleteMember(member.id)" pTooltip="Supprimer"></p-button>
             </div>

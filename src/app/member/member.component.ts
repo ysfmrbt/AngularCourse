@@ -7,6 +7,7 @@ import {
   ElementRef,
 } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common'; // Import CommonModule & DatePipe
+import { Router, RouterModule } from '@angular/router';
 import { MemberService } from '../../services/member.service';
 import { Member } from '../../models/Member';
 // import { MatDialog } from '@angular/material/dialog';
@@ -48,6 +49,7 @@ type MatTableDataSource<T> = any;
   standalone: true,
   imports: [
     CommonModule,
+    RouterModule,
     TableModule,
     ButtonModule,
     InputTextModule,
@@ -77,7 +79,8 @@ export class MemberComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private memberService: MemberService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private router: Router
   ) {
     // Replace MatTableDataSource instantiation
     // this.dataSource = new MatTableDataSource<Member>([]);
@@ -209,5 +212,10 @@ export class MemberComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onDetailsDialogClose() {
     this.detailsDialogVisible = false;
+  }
+
+  // Navigate to member details page
+  viewMemberDetails(id: string) {
+    this.router.navigate(['/member-details', id]);
   }
 }

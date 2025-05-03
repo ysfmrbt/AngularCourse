@@ -1,0 +1,23 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+h1 {
+  color: var(--text-color);
+  font-weight: 600;
+}
+
+.p-field label {
+  color: var(--text-color-secondary);
+}
+
+:host ::ng-deep .p-tabview .p-tabview-nav {
+  border-bottom: 1px solid var(--surface-border);
+}
+
+:host ::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}

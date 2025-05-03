@@ -1,0 +1,75 @@
+<div class="container">
+  <p-toast></p-toast>
+  
+  <div class="flex justify-content-between align-items-center mb-4">
+    <h1>Member Details</h1>
+    <button pButton icon="pi pi-arrow-left" label="Back to Members" (click)="goBack()" class="p-button-outlined"></button>
+  </div>
+  
+  <div *ngIf="loading" class="flex justify-content-center">
+    <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+  </div>
+  
+  <div *ngIf="!loading && member">
+    <p-card>
+      <ng-template pTemplate="header">
+        <div class="flex align-items-center p-3 bg-primary-50">
+          <i class="pi pi-user mr-2" style="font-size: 1.5rem"></i>
+          <h2 class="m-0">{{ member.nom }}</h2>
+        </div>
+      </ng-template>
+      
+      <div class="grid">
+        <div class="col-12 md:col-6">
+          <div class="p-field mb-3">
+            <label class="font-bold block mb-1">ID</label>
+            <div>{{ member.id }}</div>
+          </div>
+        </div>
+        
+        <div class="col-12 md:col-6">
+          <div class="p-field mb-3">
+            <label class="font-bold block mb-1">CIN</label>
+            <div>{{ member.cin }}</div>
+          </div>
+        </div>
+        
+        <div class="col-12 md:col-6">
+          <div class="p-field mb-3">
+            <label class="font-bold block mb-1">Type</label>
+            <div>
+              <span [ngClass]="{
+                'bg-primary-100 text-primary-700': member.type === 'Enseignant',
+                'bg-success-100 text-success-700': member.type === 'Etudiant',
+                'bg-warning-100 text-warning-700': member.type === 'Autre'
+              }" class="px-2 py-1 text-xs rounded-md">
+                {{ member.type }}
+              </span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-12 md:col-6">
+          <div class="p-field mb-3">
+            <label class="font-bold block mb-1">Created Date</label>
+            <div>{{ member.createDate | date:'mediumDate' }}</div>
+          </div>
+        </div>
+      </div>
+    </p-card>
+    
+    <div class="mt-4">
+      <p-tabView>
+        <p-tabPanel header="Publications">
+          <app-member-publications [memberId]="memberId"></app-member-publications>
+        </p-tabPanel>
+        <!-- Additional tabs can be added here for other member-related information -->
+      </p-tabView>
+    </div>
+  </div>
+  
+  <div *ngIf="!loading && !member" class="p-4 text-center">
+    <p>Member not found.</p>
+    <button pButton label="Back to Members" (click)="goBack()" class="p-button-outlined mt-3"></button>
+  </div>
+</div>
