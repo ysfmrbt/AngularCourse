@@ -3,10 +3,11 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "concurrently \"ng serve\" \"npm run json-server\"",
+    "start": "ng serve",
     "build": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "serve:prod": "npx serve -s dist/first-app",
     "json-server": "json-server --watch src/assets/db.json --port 3000"
   },
   "private": true,
@@ -23,6 +24,7 @@
     "@primeng/themes": "^19.0.10",
     "chart.js": "^4.4.9",
     "firebase": "^11.6.0",
+    "http-server": "^14.1.1",
     "primeflex": "^4.0.0",
     "primeicons": "^7.0.0",
     "primeng": "^19.0.10",
