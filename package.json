@@ -7,7 +7,7 @@
     "build": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:prod": "npx serve -s dist/first-app",
+    "serve:prod": "lite-server --baseDir=\"dist/first-app/browser\"",
     "json-server": "json-server --watch src/assets/db.json --port 3000"
   },
   "private": true,
